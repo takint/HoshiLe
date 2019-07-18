@@ -1,0 +1,33 @@
+DROP DATABASE IF EXISTS HoshiLe;
+CREATE DATABASE HoshiLe;
+
+USE HoshiLe;
+
+CREATE TABLE User (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    shoppingCart TEXT
+);
+
+CREATE TABLE Product (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    brand VARCHAR(255) NOT NULL,
+    price DECIMAL(10, 2) NOT NULL
+);
+
+CREATE TABLE OrderHead (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    userId INT NOT NULL REFERENCES User (id),
+    createDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE OrderDetail (
+    orderId INT NOT NULL REFERENCES OrderHead (id),
+    detailId INT NOT NULL,
+    productId INT NOT NULL REFERENCES Product (id),
+    quantity INT NOT NULL,
+    PRIMARY KEY (orderId, detailId)
+);
