@@ -1,19 +1,21 @@
 <?php
 
-// +-------+---------------+------+-----+---------+----------------+
-// | Field | Type          | Null | Key | Default | Extra          |
-// +-------+---------------+------+-----+---------+----------------+
-// | id    | int(11)       | NO   | PRI | NULL    | auto_increment |
-// | name  | varchar(255)  | NO   |     | NULL    |                |
-// | brand | varchar(255)  | NO   |     | NULL    |                |
-// | price | decimal(10,2) | NO   |     | NULL    |                |
-// +-------+---------------+------+-----+---------+----------------+
+// +----------+---------------+------+-----+---------+----------------+
+// | Field    | Type          | Null | Key | Default | Extra          |
+// +----------+---------------+------+-----+---------+----------------+
+// | id       | int(11)       | NO   | PRI | NULL    | auto_increment |
+// | name     | varchar(255)  | NO   |     | NULL    |                |
+// | brand    | varchar(255)  | NO   |     | NULL    |                |
+// | price    | decimal(10,2) | NO   |     | NULL    |                |
+// | imageUrl | varchar(255)  | NO   |     | NULL    |                |
+// +----------+---------------+------+-----+---------+----------------+
 
 class Product extends BaseEntity {
     
     private $name;
     private $brand;
     private $price;
+    private $imageUrl;
 
     // Getter
     public function getName() : string {
@@ -26,6 +28,10 @@ class Product extends BaseEntity {
 
     public function getPrice() : float{
         return $this->price;
+    }
+
+    public function getImageUrl() : string {
+        return $this->imageUrl;
     }
 
     // Setter
@@ -41,6 +47,10 @@ class Product extends BaseEntity {
         $this->price = $value;
     }
 
+    public function setImageUrl(string $value) {
+        $this->imageUrl = $value;
+    }
+
     public function serialize() : stdClass {
         $obj = new stdClass;
         
@@ -48,6 +58,7 @@ class Product extends BaseEntity {
         $obj->name = $this->name;
         $obj->brand = $this->brand;
         $obj->price = $this->price;
+        $obj->imageUrl = $this->imageUrl;
 
         return $obj;
     }
