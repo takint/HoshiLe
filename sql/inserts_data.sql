@@ -1,24 +1,26 @@
+USE HoshiLe;
+
 -- Insert data for Product table
-insert into Products(name, brand, price) values ('VGA Card', 'Google', 213.89);
-insert into Products(name, brand, price) values ('Gaming Laptop', 'Logitech', 1133.48);
-insert into Products(name, brand, price) values ('Mouse', 'Google', 1772.81);
-insert into Products(name, brand, price) values ('Desktop', 'MSI', 1112.56);
-insert into Products(name, brand, price) values ('VGA Card', 'Microsoft', 2838.80);
-insert into Products(name, brand, price) values ('Mouse', 'ASUS', 2497.81);
-insert into Products(name, brand, price) values ('Desktop', 'LG', 1376.79);
-insert into Products(name, brand, price) values ('Monitor', 'Google', 1253.60);
-insert into Products(name, brand, price) values ('Monitor', 'Razor', 1028.81);
-insert into Products(name, brand, price) values ('VGA Card', 'Dell', 1129.48);
-insert into Products(name, brand, price) values ('Mouse', 'Google', 791.94);
-insert into Products(name, brand, price) values ('Desktop', 'ASUS', 1221.68);
-insert into Products(name, brand, price) values ('Mouse', 'LG', 1313.69);
-insert into Products(name, brand, price) values ('VGA Card', 'Logitech', 747.52);
-insert into Products(name, brand, price) values ('Mouse', 'Google', 506.08);
-insert into Products(name, brand, price) values ('Mouse', 'Logitech', 2767.57);
-insert into Products(name, brand, price) values ('Monitor', 'HP', 274.21);
-insert into Products(name, brand, price) values ('Desktop', 'LG', 2749.61);
-insert into Products(name, brand, price) values ('Monitor', 'Razor', 162.09);
-insert into Products(name, brand, price) values ('Mouse', 'MSI', 1283.18);
+insert into Products(name, brand, price, imageUrl) values ('MacBook Air', 'Apple', 574.55, 'https://images-na.ssl-images-amazon.com/images/I/81UdIMh89YL._SL1500_.jpg');
+insert into Products(name, brand, price, imageUrl) values ('Gamer Xtreme', 'Cyberpower', 1071.68, 'https://images-na.ssl-images-amazon.com/images/I/71DvG2FjM%2BL._SL1500_.jpg');
+insert into Products(name, brand, price, imageUrl) values ('Galaxy A70', 'Samsung', 485.18, 'https://images-na.ssl-images-amazon.com/images/I/61Ygdf5VvoL._SL1500_.jpg');
+insert into Products(name, brand, price, imageUrl) values ('VGA Card', 'VisionTek', 50.99, 'https://images-na.ssl-images-amazon.com/images/I/41A%2BW0v5m-L.jpg');
+insert into Products(name, brand, price, imageUrl) values ('Gaming Laptop', 'Asus', 1649.00, 'https://images-na.ssl-images-amazon.com/images/I/91pZKrNVBAL._SL1500_.jpg');
+insert into Products(name, brand, price, imageUrl) values ('Mouse', 'VicTsing', 15.13, 'https://images-na.ssl-images-amazon.com/images/I/61y5xxDVavL._SL1280_.jpg');
+insert into Products(name, brand, price, imageUrl) values ('Desktop PC', 'MSI', 1156.99, 'https://images-na.ssl-images-amazon.com/images/I/811Umzw-suL._SL1500_.jpg');
+insert into Products(name, brand, price, imageUrl) values ('VGA Card', 'ZOTAC', 59.99, 'https://images-na.ssl-images-amazon.com/images/I/71Gg09aXz0L._SL1500_.jpg');
+insert into Products(name, brand, price, imageUrl) values ('Mouse', 'ASUS', 119.35, 'https://images-na.ssl-images-amazon.com/images/I/81b0Lkw-HgL._SL1500_.jpg');
+insert into Products(name, brand, price, imageUrl) values ('Desktop Monitor', 'LG', 209.24, 'https://images-na.ssl-images-amazon.com/images/I/81MzNtSWWQL._SL1500_.jpg');
+insert into Products(name, brand, price, imageUrl) values ('Wi-Fi System', 'Google', 159.00, 'https://images-na.ssl-images-amazon.com/images/I/31iN8Vrt2XL.jpg');
+insert into Products(name, brand, price, imageUrl) values ('Keyboard', 'Redragon', 45.99, 'https://images-na.ssl-images-amazon.com/images/I/71FYqRS9YSL._SL1500_.jpg');
+insert into Products(name, brand, price, imageUrl) values ('VGA Card', 'Dell', 2761.62, 'https://images-na.ssl-images-amazon.com/images/I/51lFI1XHcwL.jpg');
+insert into Products(name, brand, price, imageUrl) values ('Keyboard', 'Google', 25.88, 'https://images-na.ssl-images-amazon.com/images/I/719A7-TRCkL._SL1500_.jpg');
+insert into Products(name, brand, price, imageUrl) values ('Mini PC', 'ASUS', 366.70, 'https://images-na.ssl-images-amazon.com/images/I/81IZyYzzIiL._SL1500_.jpg');
+insert into Products(name, brand, price, imageUrl) values ('Keyboard case', 'LG', 21.95, 'https://images-na.ssl-images-amazon.com/images/I/81K45ouTjjL._SL1500_.jpg');
+insert into Products(name, brand, price, imageUrl) values ('VGA Cable', 'Logitech', 79.99, 'https://images-na.ssl-images-amazon.com/images/I/61nSC3ikFQL._SL1001_.jpg');
+insert into Products(name, brand, price, imageUrl) values ('Trackball', 'Logitech', 16.99, 'https://images-na.ssl-images-amazon.com/images/I/71ILgBHzCnL._SL1200_.jpg');
+insert into Products(name, brand, price, imageUrl) values ('Tablet PC', 'HP', 525.00, 'https://images-na.ssl-images-amazon.com/images/I/71lIIz6IztL._SL1500_.jpg');
+insert into Products(name, brand, price, imageUrl) values ('Smart Watch', 'Mobvoi', 297.99, 'https://images-na.ssl-images-amazon.com/images/I/614-CpmlaHL._UL1000_.jpg');
 
 -- Insert data for User table
 -- All users have password 1234
