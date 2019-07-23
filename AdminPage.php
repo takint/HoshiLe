@@ -1,6 +1,6 @@
 <?php
 
-require_once("inc/Admin/Page.class.php");
+require_once("header.inc.php");
 
 AdminPage::header();
 AdminPage::navigator();
