@@ -3,10 +3,10 @@
 class PDOAgent {
 
     // Connection Details
-    private $host = "";
-    private $user = "";
-    private $password = "";
-    private $dbname = "";
+    private $host = DB_HOST;
+    private $user = DB_USER;
+    private $password = DB_PASS;
+    private $dbname = DB_NAME;
 
     private $dsn = "";           //Data Source Name
     private $className = "";     //Name of the class we are mapping with this PDO Agent
