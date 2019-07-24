@@ -16,7 +16,7 @@ class ClientPage {
         include 'view/footer.view.php';
     }
 
-    public static function productList() {
+    public static function productList($products) {
         include 'view/productList.view.php';
     }
 }
