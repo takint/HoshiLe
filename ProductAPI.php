@@ -10,15 +10,15 @@ require_once('inc/RestAPI/ProductDAO.class.php');
 ProductDAO::initialize();
 
 //Pull the request data
-parse_str(file_get_contents('php://input'), $requestData);
+$requestData = json_decode(file_get_contents('php://input'));
 
 //Do something based on the request
 switch ($_SERVER["REQUEST_METHOD"]) {
 
     //If there was a request with an id return that product, if not return all of them!
     case "GET":
-        if (isset($requestData['id'])) {
-            $product = ProductDAO::getProduct($requestData['id']);
+        if (isset($requestData->id)) {
+            $product = ProductDAO::getProduct($requestData->id);
             $stdProduct = $product->serialize();
 
             header('Content-Type: application/json');

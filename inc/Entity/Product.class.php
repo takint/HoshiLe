@@ -62,6 +62,18 @@ class Product extends BaseEntity {
 
         return $obj;
     }
+
+    public static function deserialize(stdClass $obj) : Product {
+        $product = new Product();
+
+        $product->setId($obj->id);
+        $product->setName($obj->name);
+        $product->setBrand($obj->brand);
+        $product->setPrice($obj->price);
+        $product->setImageUrl($obj->imageUrl);
+
+        return $product;
+    }
 }
 
 ?>
