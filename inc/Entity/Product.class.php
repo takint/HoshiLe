@@ -19,19 +19,19 @@ class Product extends BaseEntity {
 
     // Getter
     public function getName() : string {
-        return $this->name;
+        return $this->name?? "";
     }
 
     public function getBrand() : string{
-        return $this->brand;
+        return $this->brand?? "";
     }
 
     public function getPrice() : float{
-        return $this->price;
+        return $this->price?? 0;
     }
 
     public function getImageUrl() : string {
-        return $this->imageUrl;
+        return $this->imageUrl?? "";
     }
 
     // Setter

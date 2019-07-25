@@ -8,7 +8,7 @@ class AdminPage {
         include_once('views/header.view.php');
     }
 
-    public static function body(){
+    public static function body($currentCtr = "product"){
         include_once('views/body.view.php');
     }
 
@@ -18,6 +18,14 @@ class AdminPage {
 
     public static function navigator() {
         include_once('views/nav.view.php');
+    }
+
+    public static function productList($lstProducts) {
+        include_once('views/product-list.view.php');
+    }
+
+    public static function productDetails($product, $mode = "view") {
+        include_once('views/product-details.view.php');
     }
 }
 

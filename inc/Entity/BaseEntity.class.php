@@ -4,7 +4,7 @@ abstract class BaseEntity {
     protected $id;
 
     public function getId() : int {
-        return $this->id;
+        return $this->id?? 0;
     }
 
     public function setId(int $value) {
