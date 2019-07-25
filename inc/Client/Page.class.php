@@ -19,6 +19,10 @@ class ClientPage {
     public static function productList($products) {
         include 'view/productList.view.php';
     }
+
+    public static function productDetail($product) {
+        include 'view/productDetail.view.php';
+    }
 }
 
 ?>
