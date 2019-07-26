@@ -23,8 +23,8 @@
           ?>
             <tr>
               <td class="w-25"><img class="img-fluid w-75" src="<?php echo $tuple->product->getImageUrl(); ?>" alt=""></td>
-              <td><?php echo $tuple->product->getBrand(); ?></td>
-              <td><?php echo $tuple->product->getName(); ?></td>
+              <td><?php echo htmlspecialchars($tuple->product->getBrand()); ?></td>
+              <td><?php echo htmlspecialchars($tuple->product->getName()); ?></td>
               <td>
                 <form class="d-inline" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
                   <input type="hidden" name="action" value="updateCart">

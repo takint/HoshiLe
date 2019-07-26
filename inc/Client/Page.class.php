@@ -27,6 +27,10 @@ class ClientPage {
     public static function shoppingCart($shoppingCart) {
         include 'view/shoppingCart.view.php';
     }
+
+    public static function alert($errors) {
+        include 'view/alert.view.php';
+    }
 }
 
 ?>

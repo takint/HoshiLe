@@ -35,8 +35,12 @@ if (isset($_GET['mode']) && $_GET['mode'] == 'shoppingCart') {
     ClientPage::shoppingCart(Session::getShoppingCart($products));
 } else if (isset($_GET['productId'])) {
     $result = RestClient::call('GET', PRODUCT_API, array('id' => $_GET['productId']));
-    $product = Product::deserialize($result);
-    ClientPage::productDetail($product);
+    if ($product) {
+        $product = Product::deserialize($result);
+        ClientPage::productDetail($product);
+    } else {
+        ClientPage::alert(array('Sorry, product not found.'));
+    }
 } else {
     $result = RestClient::call('GET', PRODUCT_API);
     $products = array_map('Product::deserialize', $result);
