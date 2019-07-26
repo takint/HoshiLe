@@ -19,7 +19,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
     case "GET":
         if (isset($requestData->id)) {
             $product = ProductDAO::getProduct($requestData->id);
-            $stdProduct = $product->serialize();
+            $stdProduct = is_null($product) ? null : $product->serialize();
 
             header('Content-Type: application/json');
             echo json_encode($stdProduct);

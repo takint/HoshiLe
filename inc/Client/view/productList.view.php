@@ -10,8 +10,8 @@
                 <img src="<?php echo $product->getImageUrl(); ?>" alt="" class="img-fluid">
                 <div class="card-body d-flex justify-content-between align-items-center">
                   <div>
-                    <h6 class="card-subtitle"><?php echo $product->getBrand(); ?></h6>
-                    <h4 class="card-title mb-0"><?php echo $product->getName(); ?></h4>
+                    <h6 class="card-subtitle"><?php echo htmlspecialchars($product->getBrand()); ?></h6>
+                    <h4 class="card-title mb-0"><?php echo htmlspecialchars($product->getName()); ?></h4>
                   </div>
                   <button class="btn btn-secondary stretched-link" type="submit">Detail</button>
                 </div>

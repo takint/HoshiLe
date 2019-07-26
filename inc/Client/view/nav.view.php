@@ -1,11 +1,11 @@
 <header class="py-4">
   <div class="container text-center">
-    <h1><a href="<?php echo $_SERVER['PHP_SELF']; ?>"><?php echo self::$title; ?></h1>
+    <h1><a href="<?php echo $_SERVER['PHP_SELF']; ?>"><?php echo htmlspecialchars(self::$title); ?></h1>
   </div>
 </header>
 <nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
   <div class="container">
-    <a class="navbar-brand" href="<?php echo $_SERVER['PHP_SELF']; ?>"><?php echo self::$title; ?></a>
+    <a class="navbar-brand" href="<?php echo $_SERVER['PHP_SELF']; ?>"><?php echo htmlspecialchars(self::$title); ?></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>

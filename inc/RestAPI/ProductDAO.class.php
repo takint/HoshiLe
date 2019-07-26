@@ -10,7 +10,7 @@ class ProductDAO {
     }
 
     //READ a single Product
-    static function getProduct(int $id): Product {
+    static function getProduct(int $id): ?Product {
 
         $sql = 'SELECT * FROM Products WHERE id = :id';
 
@@ -24,7 +24,8 @@ class ProductDAO {
         self::$db->execute();
 
         // Return the result
-        return self::$db->singleResult();
+        $result = self::$db->singleResult();
+        return $result ? $result : null;
     }
 
     //READ a list of Products
