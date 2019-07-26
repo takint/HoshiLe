@@ -26,9 +26,19 @@
               <td><?php echo $tuple->product->getBrand(); ?></td>
               <td><?php echo $tuple->product->getName(); ?></td>
               <td>
-                <button class="btn btn-sm btn-light">-</button>
+                <form class="d-inline" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+                  <input type="hidden" name="action" value="updateCart">
+                  <input type="hidden" name="productId" value="<?php echo $tuple->product->getId(); ?>">
+                  <input type="hidden" name="quantity" value="<?php echo $tuple->quantity - 1; ?>">
+                  <button class="btn btn-sm btn-light" type="submit">-</button>
+                </form>
                 <span class="mx-2"><?php echo $tuple->quantity; ?></span>
-                <button class="btn btn-sm btn-light">+</button>
+                <form class="d-inline" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+                  <input type="hidden" name="action" value="updateCart">
+                  <input type="hidden" name="productId" value="<?php echo $tuple->product->getId(); ?>">
+                  <input type="hidden" name="quantity" value="<?php echo $tuple->quantity + 1; ?>">
+                  <button class="btn btn-sm btn-light" type="submit">+</button>
+                </form>
               </td>
               <td>$<?php echo number_format($unitPrice, 2); ?></td>
               <td>$<?php echo number_format($price, 2); ?></td>
@@ -44,7 +54,10 @@
         </tfoot>
       </table>
       <div class="text-center">
-        <button class="btn btn-lg btn-primary w-25">Purchase</button>
+        <button class="btn btn-lg btn-primary w-25" <?php if (empty($shoppingCart)) echo 'disabled' ?>>Purchase</button>
+      </div>
+      <div class="text-center mt-2">
+        <a class="btn btn-link" href="<?php echo $_SERVER['PHP_SELF']; ?>">Continue Shopping</a>
       </div>
     </div>
   </div>

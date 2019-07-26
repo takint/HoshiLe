@@ -24,7 +24,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             header('Content-Type: application/json');
             echo json_encode($stdProduct);
         } else {
-            $products = ProductDAO::getProducts();
+            if (isset($requestData->ids)) {
+                $products = ProductDAO::getProducts(array_filter($requestData->ids, 'is_int'));
+            } else {
+                $products = ProductDAO::getProducts();
+            }
             $stdProducts = array();
             foreach ($products as $product) {
                 $stdProducts[] = $product->serialize();

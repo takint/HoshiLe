@@ -10,9 +10,9 @@ class ProductDAO {
     }
 
     //READ a single Product
-    static function getProduct(int $id) : Product {
+    static function getProduct(int $id): Product {
 
-        $sql = 'SELECT * FROM Products WHERE id = :id;';
+        $sql = 'SELECT * FROM Products WHERE id = :id';
 
         // Query
         self::$db->query($sql);
@@ -28,9 +28,12 @@ class ProductDAO {
     }
 
     //READ a list of Products
-    static function getProducts() : array   {
+    static function getProducts(array $ids = null): array   {
 
-        $sql = 'SELECT * FROM Products;';
+        $sql = 'SELECT * FROM Products';
+        if (!empty($ids)) {
+            $sql .= ' WHERE id in (' . implode(', ', $ids) . ')';
+        }
 
         // Query
         self::$db->query($sql);
