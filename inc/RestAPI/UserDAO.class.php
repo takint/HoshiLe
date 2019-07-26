@@ -90,6 +90,42 @@ class UserDAO {
         // Return the result
         return self::$db->rowCount() > 0;
     }
+
+    //Update password
+    static function updatePassword(int $id, string $curPassword, string $newPassword): bool {
+
+        $sql1 = 'SELECT * FROM Users WHERE id = :id';
+
+        // Query
+        self::$db->query($sql1);
+
+        // Bind a parameter
+        self::$db->bind(':id', $id);
+
+        // Execute
+        self::$db->execute();
+
+        // Return the result
+        $result = self::$db->singleResult();
+        if (!($result && password_verify($curPassword, $result->getPassword()))) {
+            return false;
+        }
+
+        $sql2 = 'UPDATE Users SET password = :password WHERE id = :id';
+
+        // Query
+        self::$db->query($sql2);
+
+        // Bind a parameter
+        self::$db->bind(':id', $id);
+        self::$db->bind(':password', password_hash($newPassword, PASSWORD_DEFAULT));
+
+        // Execute
+        self::$db->execute();
+
+        // Return the result
+        return self::$db->rowCount() > 0;
+    }
 }
 
 ?>

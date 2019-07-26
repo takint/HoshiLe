@@ -69,6 +69,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         }
     }
+    if ($_POST['action'] == 'updatePassword' && !is_null(Session::$userId)
+            && isset($_POST['curPassword']) && isset($_POST['password1']) && isset($_POST['password2'])) {
+        if ($_POST['curPassword'] == '' || $_POST['password1'] == '') {
+            $errors[] = 'Oops, your password is empty.';
+        } else if ($_POST['password1'] != $_POST['password2']) {
+            $errors[] = 'Oops, your passwords do not match.';
+        } else {
+            $params = array(
+                'id' => Session::$userId,
+                'curPassword' => $_POST['curPassword'],
+                'newPassword' => $_POST['password1']
+            );
+            $result = RestClient::call('PUT', USER_API, $params);
+            if ($result) {
+                header('Location: ' . $_SERVER['PHP_SELF']);
+                exit;
+            } else {
+                $errors[] = 'Sorry, failed to update password.';
+            }
+        }
+    }
     if ($_POST['action'] == 'logout') {
         Session::logout();
         header('Location: ' . $_SERVER['PHP_SELF']);

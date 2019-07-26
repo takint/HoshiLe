@@ -45,6 +45,13 @@ switch ($_SERVER['REQUEST_METHOD']) {
             } catch (PDOException $ex) {
                 $result = false;
             }
+        } else if (isset($requestData->curPassword) && isset($requestData->newPassword)) {
+            try {
+                $result = UserDAO::updatePassword(
+                    $requestData->id, $requestData->curPassword, $requestData->newPassword);
+            } catch (PDOException $ex) {
+                $result = false;
+            }
         } else {
             $result = false;
         }
