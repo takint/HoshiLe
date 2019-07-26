@@ -12,19 +12,23 @@ Session::initialize();
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($_POST['action'] == 'addToCart' && isset($_POST['productId'])) {
         Session::addProduct($_POST['productId']);
-        header('Location: ' . $_SERVER['PHP_SELF'] . '?mode=shoppingCart');
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?page=shoppingCart');
         exit;
     }
     if ($_POST['action'] == 'updateCart' && isset($_POST['productId']) && isset($_POST['quantity'])) {
         Session::updateCart($_POST['productId'], $_POST['quantity']);
-        header('Location: ' . $_SERVER['PHP_SELF'] . '?mode=shoppingCart');
+        header('Location: ' . $_SERVER['PHP_SELF'] . '?page=shoppingCart');
         exit;
     }
 }
 
 ClientPage::header();
 ClientPage::navigator();
-if (isset($_GET['mode']) && $_GET['mode'] == 'shoppingCart') {
+if (isset($_GET['page']) && $_GET['page'] == 'login') {
+    ClientPage::login();
+} else if (isset($_GET['page']) && $_GET['page'] == 'signup') {
+    ClientPage::signup();
+} else if (isset($_GET['page']) && $_GET['page'] == 'shoppingCart') {
     $ids = array_map(function($tuple) { return $tuple->productId; }, Session::$shoppingCart);
     if (!empty($ids)) {
         $result = RestClient::call('GET', PRODUCT_API, array('ids' => $ids));

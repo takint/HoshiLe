@@ -11,22 +11,19 @@
     </button>
     <div class="collapse navbar-collapse" id="navbar-content">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="#">Top <span class="sr-only">(current)</span></a>
-        </li>
         <li class="nav-item">
           <a class="nav-link" href="#about">About</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#menu">Menu</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#coupon">Coupon</a>
         </li>
       </ul>
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="btn btn-warning" href="<?php echo $_SERVER['PHP_SELF']; ?>?mode=shoppingCart">Cart</a>
+          <a class="nav-link" href="<?php echo $_SERVER['PHP_SELF']; ?>?page=login">Log in</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="<?php echo $_SERVER['PHP_SELF']; ?>?page=signup">Sign up</a>
+        </li>
+        <li class="nav-item ml-2">
+          <a class="btn btn-warning" href="<?php echo $_SERVER['PHP_SELF']; ?>?page=shoppingCart">Cart</a>
         </li>
       </ul>
     </div>
