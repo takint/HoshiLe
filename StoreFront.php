@@ -5,11 +5,29 @@ require_once 'inc/Client/Page.class.php';
 require_once 'inc/Client/Session.class.php';
 require_once 'inc/Entity/BaseEntity.class.php';
 require_once 'inc/Entity/Product.class.php';
+require_once 'inc/Entity/User.class.php';
 require_once 'inc/RestAPI/RestClient.class.php';
 
 Session::initialize();
 
+$errors = array();
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if ($_POST['action'] == 'login' && isset($_POST['email']) && isset($_POST['password'])) {
+        $params = array('email' => $_POST['email'], 'password' => $_POST['password']);
+        $result = RestClient::call('GET', USER_API, $params);
+        if ($result) {
+            Session::setUser(User::deserialize($result));
+            header('Location: ' . $_SERVER['PHP_SELF']);
+            exit;
+        } else {
+            $errors[] = 'Oops, email or password is incorrect.';
+        }
+    }
+    if ($_POST['action'] == 'logout') {
+        Session::logout();
+        header('Location: ' . $_SERVER['PHP_SELF']);
+        exit;
+    }
     if ($_POST['action'] == 'addToCart' && isset($_POST['productId'])) {
         Session::addProduct($_POST['productId']);
         header('Location: ' . $_SERVER['PHP_SELF'] . '?page=shoppingCart');
@@ -20,11 +38,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header('Location: ' . $_SERVER['PHP_SELF'] . '?page=shoppingCart');
         exit;
     }
+    if (empty($errors)) {
+        $errors[] = 'Sorry, something goes wrong.';
+    }
 }
 
 ClientPage::header();
 ClientPage::navigator();
-if (isset($_GET['page']) && $_GET['page'] == 'login') {
+if (!empty($errors)) {
+    ClientPage::alert($errors);
+} else if (isset($_GET['page']) && $_GET['page'] == 'login') {
     ClientPage::login();
 } else if (isset($_GET['page']) && $_GET['page'] == 'signup') {
     ClientPage::signup();
@@ -39,7 +62,7 @@ if (isset($_GET['page']) && $_GET['page'] == 'login') {
     ClientPage::shoppingCart(Session::getShoppingCart($products));
 } else if (isset($_GET['productId'])) {
     $result = RestClient::call('GET', PRODUCT_API, array('id' => $_GET['productId']));
-    if ($product) {
+    if ($result) {
         $product = Product::deserialize($result);
         ClientPage::productDetail($product);
     } else {
