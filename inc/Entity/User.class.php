@@ -30,7 +30,7 @@ class User extends BaseEntity {
         return $this->password;
     }
 
-    public function getShoppingCart() : string{
+    public function getShoppingCart() : ?string{
         return $this->shoppingCart;
     }
 
@@ -43,26 +43,41 @@ class User extends BaseEntity {
         $this->email = $value;
     }
 
-    public function setPassword(float $value) {
+    public function setPassword(string $value) {
         $this->password = $value;
     }
 
-    public function setShoppingCart(float $value) {
+    public function setShoppingCart(?string $value) {
         $this->shoppingCart = $value;
     }
 
-    public function serialize() : stdClass {
+    public function serialize(bool $includePassword = false) : stdClass {
         $obj = new stdClass;
         
         $obj->id = $this->id;
         $obj->name = $this->name;
         $obj->email = $this->email;
-        $obj->password = $this->password;
+        if ($includePassword) {
+            $obj->password = $this->password;
+        }
         $obj->shoppingCart = $this->shoppingCart;
 
         return $obj;
     }
 
+    public static function deserialize(stdClass $obj, bool $includePassword = false) : User {
+        $user = new User();
+
+        $user->setId($obj->id);
+        $user->setName($obj->name);
+        $user->setEmail($obj->email);
+        if ($includePassword) {
+            $user->setPassword($obj->password);
+        }
+        $user->getShoppingCart($obj->shoppingCart);
+
+        return $user;
+    }
 }
 
 ?>

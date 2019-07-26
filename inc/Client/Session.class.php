@@ -2,14 +2,37 @@
 
 class Session {
 
+    public static $userId = null;
+    public static $userName = null;
+
     public static $shoppingCart = array();
 
     public static function initialize() {
         session_start();
 
+        if (!empty($_SESSION['user'])) {
+            self::$userId = $_SESSION['user']['id'];
+            self::$userName = $_SESSION['user']['name'];
+        }
+
         if (!empty($_SESSION['shoppingCart'])) {
             self::$shoppingCart = json_decode($_SESSION['shoppingCart']);
         }
+    }
+
+    public static function setUser(User $user) {
+        self::$userId = $user->getId();
+        self::$userName = $user->getName();
+        $_SESSION['user'] = array(
+            'id' => self::$userId,
+            'name' => self::$userName
+        );
+    }
+
+    public static function logout() {
+        self::$userId = null;
+        self::$userName = null;
+        unset($_SESSION['user']);
     }
 
     public static function getShoppingCart(array $products): array {

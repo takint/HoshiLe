@@ -29,7 +29,7 @@ class ProductDAO {
     }
 
     //READ a list of Products
-    static function getProducts(array $ids = null): array   {
+    static function getProducts(array $ids = null): array {
 
         $sql = 'SELECT * FROM Products';
         if (!empty($ids)) {

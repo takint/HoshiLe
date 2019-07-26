@@ -11,22 +11,35 @@
     </button>
     <div class="collapse navbar-collapse" id="navbar-content">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="#">Top <span class="sr-only">(current)</span></a>
-        </li>
         <li class="nav-item">
           <a class="nav-link" href="#about">About</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#menu">Menu</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#coupon">Coupon</a>
-        </li>
       </ul>
       <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="btn btn-warning" href="<?php echo $_SERVER['PHP_SELF']; ?>?mode=shoppingCart">Cart</a>
+        <?php if (is_null(Session::$userId) || is_null(Session::$userName)) { ?>
+          <li class="nav-item">
+            <a class="nav-link" href="<?php echo $_SERVER['PHP_SELF']; ?>?page=login">Log in</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="<?php echo $_SERVER['PHP_SELF']; ?>?page=signup">Sign up</a>
+          </li>
+        <?php } else { ?>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <?php echo htmlspecialchars(Session::$userName); ?>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="#about">About</a>
+              <div class="dropdown-divider"></div>
+              <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+                <input type="hidden" name="action" value="logout">
+                <button class="dropdown-item" type="submit">Log out</button>
+              </form>
+           </div>
+          </li>
+        <?php } ?>
+        <li class="nav-item ml-2">
+          <a class="btn btn-warning" href="<?php echo $_SERVER['PHP_SELF']; ?>?page=shoppingCart">Cart</a>
         </li>
       </ul>
     </div>

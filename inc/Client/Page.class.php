@@ -16,6 +16,14 @@ class ClientPage {
         include 'view/footer.view.php';
     }
 
+    public static function login() {
+        include 'view/login.view.php';
+    }
+
+    public static function signup() {
+        include 'view/signup.view.php';
+    }
+
     public static function productList($products) {
         include 'view/productList.view.php';
     }
