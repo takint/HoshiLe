@@ -29,7 +29,7 @@
               <?php echo htmlspecialchars(Session::$userName); ?>
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="#about">About</a>
+              <a class="dropdown-item" href="<?php echo $_SERVER['PHP_SELF']; ?>?page=profile">Profile</a>
               <div class="dropdown-divider"></div>
               <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
                 <input type="hidden" name="action" value="logout">
@@ -39,7 +39,9 @@
           </li>
         <?php } ?>
         <li class="nav-item ml-2">
-          <a class="btn btn-warning" href="<?php echo $_SERVER['PHP_SELF']; ?>?page=shoppingCart">Cart</a>
+          <a class="btn btn-<?php echo empty(Session::$shoppingCart) ? 'secondary disabled' : 'warning'; ?>" href="<?php echo $_SERVER['PHP_SELF']; ?>?page=shoppingCart">
+            Cart
+          </a>
         </li>
       </ul>
     </div>

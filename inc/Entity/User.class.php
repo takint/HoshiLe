@@ -65,10 +65,12 @@ class User extends BaseEntity {
         return $obj;
     }
 
-    public static function deserialize(stdClass $obj, bool $includePassword = false) : User {
+    public static function deserialize(stdClass $obj, bool $includeId = true, bool $includePassword = false) : User {
         $user = new User();
 
-        $user->setId($obj->id);
+        if ($includeId) {
+            $user->setId($obj->id);
+        }
         $user->setName($obj->name);
         $user->setEmail($obj->email);
         if ($includePassword) {

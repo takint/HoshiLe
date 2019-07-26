@@ -13,14 +13,81 @@ Session::initialize();
 $errors = array();
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($_POST['action'] == 'login' && isset($_POST['email']) && isset($_POST['password'])) {
-        $params = array('email' => $_POST['email'], 'password' => $_POST['password']);
+        $params = array(
+            'email' => $_POST['email'],
+            'password' => $_POST['password']
+        );
         $result = RestClient::call('GET', USER_API, $params);
         if ($result) {
-            Session::setUser(User::deserialize($result));
+            $user = User::deserialize($result);
+            Session::setUser($user->getId(), $user->getName());
             header('Location: ' . $_SERVER['PHP_SELF']);
             exit;
         } else {
             $errors[] = 'Oops, email or password is incorrect.';
+        }
+    }
+    if ($_POST['action'] == 'signup' && isset($_POST['name']) &&
+            isset($_POST['email']) && isset($_POST['password1']) && isset($_POST['password2'])) {
+        if ($_POST['name'] == '' || $_POST['email'] == '' || $_POST['password1'] == '') {
+            $errors[] = 'Oops, your name, email, or password is empty.';
+        } else if ($_POST['password1'] != $_POST['password2']) {
+            $errors[] = 'Oops, your passwords do not match.';
+        } else {
+            $params = array(
+                'name' => $_POST['name'],
+                'email' => $_POST['email'],
+                'password' => $_POST['password1']
+            );
+            $result = RestClient::call('POST', USER_API, $params);
+            if ($result) {
+                Session::setUser($result, $_POST['name']);
+                header('Location: ' . $_SERVER['PHP_SELF']);
+                exit;
+            } else {
+                $errors[] = 'Sorry, failed to create a user.';
+            }
+        }
+    }
+    if ($_POST['action'] == 'updateProfile' && !is_null(Session::$userId)
+            && isset($_POST['name']) && isset($_POST['email'])) {
+        if ($_POST['name'] == '' || $_POST['email'] == '') {
+            $errors[] = 'Oops, your name or email is empty.';
+        } else {
+            $params = array(
+                'id' => Session::$userId,
+                'name' => $_POST['name'],
+                'email' => $_POST['email']
+            );
+            $result = RestClient::call('PUT', USER_API, $params);
+            if ($result) {
+                Session::setUser(Session::$userId, $_POST['name']);
+                header('Location: ' . $_SERVER['PHP_SELF']);
+                exit;
+            } else {
+                $errors[] = 'Sorry, failed to update a user.';
+            }
+        }
+    }
+    if ($_POST['action'] == 'updatePassword' && !is_null(Session::$userId)
+            && isset($_POST['curPassword']) && isset($_POST['password1']) && isset($_POST['password2'])) {
+        if ($_POST['curPassword'] == '' || $_POST['password1'] == '') {
+            $errors[] = 'Oops, your password is empty.';
+        } else if ($_POST['password1'] != $_POST['password2']) {
+            $errors[] = 'Oops, your passwords do not match.';
+        } else {
+            $params = array(
+                'id' => Session::$userId,
+                'curPassword' => $_POST['curPassword'],
+                'newPassword' => $_POST['password1']
+            );
+            $result = RestClient::call('PUT', USER_API, $params);
+            if ($result) {
+                header('Location: ' . $_SERVER['PHP_SELF']);
+                exit;
+            } else {
+                $errors[] = 'Sorry, failed to update password.';
+            }
         }
     }
     if ($_POST['action'] == 'logout') {
@@ -46,11 +113,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ClientPage::header();
 ClientPage::navigator();
 if (!empty($errors)) {
-    ClientPage::alert($errors);
+    ClientPage::showErrors($errors);
 } else if (isset($_GET['page']) && $_GET['page'] == 'login') {
-    ClientPage::login();
+    ClientPage::userLogin();
 } else if (isset($_GET['page']) && $_GET['page'] == 'signup') {
-    ClientPage::signup();
+    ClientPage::userSignup();
+} else if (isset($_GET['page']) && $_GET['page'] == 'profile') {
+    $result = RestClient::call('GET', USER_API, array('id' => Session::$userId));
+    if ($result) {
+        $user = User::deserialize($result);
+        Session::setUser($user->getId(), $user->getName());
+        ClientPage::userProfile($user);
+    } else {
+        ClientPage::showErrors(array('Sorry, user not found.'));
+    }
 } else if (isset($_GET['page']) && $_GET['page'] == 'shoppingCart') {
     $ids = array_map(function($tuple) { return $tuple->productId; }, Session::$shoppingCart);
     if (!empty($ids)) {
@@ -66,7 +142,7 @@ if (!empty($errors)) {
         $product = Product::deserialize($result);
         ClientPage::productDetail($product);
     } else {
-        ClientPage::alert(array('Sorry, product not found.'));
+        ClientPage::showErrors(array('Sorry, product not found.'));
     }
 } else {
     $result = RestClient::call('GET', PRODUCT_API);

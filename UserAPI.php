@@ -13,10 +13,10 @@ UserDAO::initialize();
 $requestData = json_decode(file_get_contents('php://input'));
 
 //Do something based on the request
-switch ($_SERVER["REQUEST_METHOD"]) {
+switch ($_SERVER['REQUEST_METHOD']) {
 
     //If there was a request with an id, return that user.
-    case "GET":
+    case 'GET':
         if (isset($requestData->id)) {
             $user = UserDAO::getUser($requestData->id);
         } else if (isset($requestData->email) && isset($requestData->password)) {
@@ -26,8 +26,41 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         echo json_encode(is_null($user) ? null : $user->serialize());
         break;
 
+    case 'POST':
+        $user = User::deserialize($requestData, false, true);
+        try {
+            $result = UserDAO::createUser($user);
+        } catch (PDOException $ex) {
+            $result = null;
+        }
+        header('Content-Type: application/json');
+        echo json_encode($result);
+        break;
+
+    case 'PUT':
+        if (isset($requestData->name) && isset($requestData->email)) {
+            $user = User::deserialize($requestData);
+            try {
+                $result = UserDAO::updateUser($user);
+            } catch (PDOException $ex) {
+                $result = false;
+            }
+        } else if (isset($requestData->curPassword) && isset($requestData->newPassword)) {
+            try {
+                $result = UserDAO::updatePassword(
+                    $requestData->id, $requestData->curPassword, $requestData->newPassword);
+            } catch (PDOException $ex) {
+                $result = false;
+            }
+        } else {
+            $result = false;
+        }
+        header('Content-Type: application/json');
+        echo json_encode($result);
+        break;
+
     default:
-        echo json_encode(array("message" => "Você fala HTTP?"));
+        echo json_encode(array('message' => 'Você fala HTTP?'));
         break;
 }
 
