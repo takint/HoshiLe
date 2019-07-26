@@ -50,6 +50,26 @@ class UserDAO {
             return null;
         }
     }
+
+    //Create a User
+    static function createUser(User $user): int {
+
+        $sql = 'INSERT INTO Users (name, email, password) VALUES (:name, :email, :password)';
+
+        // Query
+        self::$db->query($sql);
+
+        // Bind a parameter
+        self::$db->bind(':name', $user->getName());
+        self::$db->bind(':email', $user->getEmail());
+        self::$db->bind(':password', password_hash($user->getPassword(), PASSWORD_DEFAULT));
+
+        // Execute
+        self::$db->execute();
+
+        // Return the result
+        return self::$db->lastInsertedId();
+    }
 }
 
 ?>

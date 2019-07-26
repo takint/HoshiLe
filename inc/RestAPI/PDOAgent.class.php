@@ -54,7 +54,7 @@ class PDOAgent {
         }
         $this->stmt->bindValue($param, $value, $type);
     }
-    
+
     public function execute($data = null) {
         if(is_null($data)) {
             return $this->stmt->execute();
@@ -75,9 +75,9 @@ class PDOAgent {
     public function rowCount() : int {
         return $this->stmt->rowCount();
     }
-    
+
     public function lastInsertedId() : int {
-        return $this->pdo->lastInsertedId();
+        return $this->pdo->lastInsertId();
     }
 }
 

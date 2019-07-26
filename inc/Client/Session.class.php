@@ -20,9 +20,9 @@ class Session {
         }
     }
 
-    public static function setUser(User $user) {
-        self::$userId = $user->getId();
-        self::$userName = $user->getName();
+    public static function setUser(int $id, string $name) {
+        self::$userId = $id;
+        self::$userName = $name;
         $_SESSION['user'] = array(
             'id' => self::$userId,
             'name' => self::$userName

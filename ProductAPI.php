@@ -13,10 +13,10 @@ ProductDAO::initialize();
 $requestData = json_decode(file_get_contents('php://input'));
 
 //Do something based on the request
-switch ($_SERVER["REQUEST_METHOD"]) {
+switch ($_SERVER['REQUEST_METHOD']) {
 
     //If there was a request with an id return that product, if not return all of them!
-    case "GET":
+    case 'GET':
         if (isset($requestData->id)) {
             $product = ProductDAO::getProduct($requestData->id);
             $stdProduct = is_null($product) ? null : $product->serialize();
@@ -40,7 +40,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         break;
 
     default:
-        echo json_encode(array("message" => "Você fala HTTP?"));
+        echo json_encode(array('message' => 'Você fala HTTP?'));
         break;
 }
 

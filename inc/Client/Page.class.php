@@ -16,12 +16,12 @@ class ClientPage {
         include 'view/footer.view.php';
     }
 
-    public static function login() {
-        include 'view/login.view.php';
+    public static function userLogin() {
+        include 'view/userLogin.view.php';
     }
 
-    public static function signup() {
-        include 'view/signup.view.php';
+    public static function userSignup() {
+        include 'view/userSignup.view.php';
     }
 
     public static function productList($products) {
@@ -36,8 +36,8 @@ class ClientPage {
         include 'view/shoppingCart.view.php';
     }
 
-    public static function alert($errors) {
-        include 'view/alert.view.php';
+    public static function showErrors($errors) {
+        include 'view/showErrors.view.php';
     }
 }
 

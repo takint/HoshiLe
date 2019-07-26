@@ -39,7 +39,9 @@
           </li>
         <?php } ?>
         <li class="nav-item ml-2">
-          <a class="btn btn-warning" href="<?php echo $_SERVER['PHP_SELF']; ?>?page=shoppingCart">Cart</a>
+          <a class="btn btn-<?php echo empty(Session::$shoppingCart) ? 'secondary disabled' : 'warning'; ?>" href="<?php echo $_SERVER['PHP_SELF']; ?>?page=shoppingCart">
+            Cart
+          </a>
         </li>
       </ul>
     </div>
