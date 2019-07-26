@@ -26,7 +26,7 @@
       </ul>
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a href="contact.html" class="nav-link btn btn-info">Contact</a>
+          <a class="btn btn-warning" href="<?php echo $_SERVER['PHP_SELF']; ?>?mode=shoppingCart">Cart</a>
         </li>
       </ul>
     </div>
