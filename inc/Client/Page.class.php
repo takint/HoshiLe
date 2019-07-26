@@ -24,19 +24,23 @@ class ClientPage {
         include 'view/userSignup.view.php';
     }
 
-    public static function productList($products) {
+    public static function userProfile(User $user) {
+        include 'view/userProfile.view.php';
+    }
+
+    public static function productList(array $products) {
         include 'view/productList.view.php';
     }
 
-    public static function productDetail($product) {
+    public static function productDetail(Product $product) {
         include 'view/productDetail.view.php';
     }
 
-    public static function shoppingCart($shoppingCart) {
+    public static function shoppingCart(array $shoppingCart) {
         include 'view/shoppingCart.view.php';
     }
 
-    public static function showErrors($errors) {
+    public static function showErrors(array $errors) {
         include 'view/showErrors.view.php';
     }
 }

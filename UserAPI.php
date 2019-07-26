@@ -37,6 +37,21 @@ switch ($_SERVER['REQUEST_METHOD']) {
         echo json_encode($result);
         break;
 
+    case 'PUT':
+        if (isset($requestData->name) && isset($requestData->email)) {
+            $user = User::deserialize($requestData);
+            try {
+                $result = UserDAO::updateUser($user);
+            } catch (PDOException $ex) {
+                $result = false;
+            }
+        } else {
+            $result = false;
+        }
+        header('Content-Type: application/json');
+        echo json_encode($result);
+        break;
+
     default:
         echo json_encode(array('message' => 'Você fala HTTP?'));
         break;

@@ -30,9 +30,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($_POST['action'] == 'signup' && isset($_POST['name']) &&
             isset($_POST['email']) && isset($_POST['password1']) && isset($_POST['password2'])) {
         if ($_POST['name'] == '' || $_POST['email'] == '' || $_POST['password1'] == '') {
-            $errors[] = 'Oops, name, email, or password is empty.';
+            $errors[] = 'Oops, your name, email, or password is empty.';
         } else if ($_POST['password1'] != $_POST['password2']) {
-            $errors[] = 'Oops, passwords do not match.';
+            $errors[] = 'Oops, your passwords do not match.';
         } else {
             $params = array(
                 'name' => $_POST['name'],
@@ -46,6 +46,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 exit;
             } else {
                 $errors[] = 'Sorry, failed to create a user.';
+            }
+        }
+    }
+    if ($_POST['action'] == 'updateProfile' && !is_null(Session::$userId)
+            && isset($_POST['name']) && isset($_POST['email'])) {
+        if ($_POST['name'] == '' || $_POST['email'] == '') {
+            $errors[] = 'Oops, your name or email is empty.';
+        } else {
+            $params = array(
+                'id' => Session::$userId,
+                'name' => $_POST['name'],
+                'email' => $_POST['email']
+            );
+            $result = RestClient::call('PUT', USER_API, $params);
+            if ($result) {
+                Session::setUser(Session::$userId, $_POST['name']);
+                header('Location: ' . $_SERVER['PHP_SELF']);
+                exit;
+            } else {
+                $errors[] = 'Sorry, failed to update a user.';
             }
         }
     }
@@ -77,6 +97,15 @@ if (!empty($errors)) {
     ClientPage::userLogin();
 } else if (isset($_GET['page']) && $_GET['page'] == 'signup') {
     ClientPage::userSignup();
+} else if (isset($_GET['page']) && $_GET['page'] == 'profile') {
+    $result = RestClient::call('GET', USER_API, array('id' => Session::$userId));
+    if ($result) {
+        $user = User::deserialize($result);
+        Session::setUser($user->getId(), $user->getName());
+        ClientPage::userProfile($user);
+    } else {
+        ClientPage::showErrors(array('Sorry, user not found.'));
+    }
 } else if (isset($_GET['page']) && $_GET['page'] == 'shoppingCart') {
     $ids = array_map(function($tuple) { return $tuple->productId; }, Session::$shoppingCart);
     if (!empty($ids)) {

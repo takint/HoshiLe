@@ -70,6 +70,26 @@ class UserDAO {
         // Return the result
         return self::$db->lastInsertedId();
     }
+
+    //Update a User
+    static function updateUser(User $user): bool {
+
+        $sql = 'UPDATE Users SET name = :name, email = :email WHERE id = :id';
+
+        // Query
+        self::$db->query($sql);
+
+        // Bind a parameter
+        self::$db->bind(':id', $user->getId());
+        self::$db->bind(':name', $user->getName());
+        self::$db->bind(':email', $user->getEmail());
+
+        // Execute
+        self::$db->execute();
+
+        // Return the result
+        return self::$db->rowCount() > 0;
+    }
 }
 
 ?>
