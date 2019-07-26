@@ -19,9 +19,6 @@
           <li class="nav-item">
             <a class="nav-link" href="#shop">Information</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="contact.html">Contact</a>
-          </li>
         </ul>
         <p><small>CSIS 3280 Project by Takanori Hoshi (300306402) and Ngoc Tin Le (300296440)<br>
         Design by <a href="https://gihyo.jp/book/2018/978-4-297-10020-9">Bootstrap 4 Textbook of Frontend Development (Japanese)</a></small></p>

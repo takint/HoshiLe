@@ -4,7 +4,7 @@ class ClientPage {
 
     public static $title = "HoshiLe’s Store";
 
-    public static function header() { 
+    public static function header() {
         include 'view/head.view.php';
     }
 
@@ -12,7 +12,7 @@ class ClientPage {
         include 'view/nav.view.php';
     }
 
-    public static function footer() { 
+    public static function footer() {
         include 'view/footer.view.php';
     }
 
@@ -22,6 +22,10 @@ class ClientPage {
 
     public static function productDetail($product) {
         include 'view/productDetail.view.php';
+    }
+
+    public static function shoppingCart($shoppingCart) {
+        include 'view/shoppingCart.view.php';
     }
 }
 
