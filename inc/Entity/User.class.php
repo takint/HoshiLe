@@ -51,6 +51,16 @@ class User extends BaseEntity {
         $this->shoppingCart = $value;
     }
 
+    // Password
+    public function verifyPassword($rawPassword) : bool {
+        return password_verify($rawPassword, $this->password);
+    }
+
+    public function setHashedPassword(string $rawPassword) {
+        $this->password = password_hash($rawPassword, PASSWORD_DEFAULT);
+    }
+
+    // Serialize and deserialize
     public function serialize(bool $includePassword = false) : stdClass {
         $obj = new stdClass;
         
@@ -76,7 +86,7 @@ class User extends BaseEntity {
         if ($includePassword) {
             $user->setPassword($obj->password);
         }
-        $user->getShoppingCart($obj->shoppingCart);
+        $user->setShoppingCart($obj->shoppingCart);
 
         return $user;
     }
