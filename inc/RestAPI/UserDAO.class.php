@@ -28,8 +28,8 @@ class UserDAO {
         return $result ? $result : null;
     }
 
-    //Authenticate a User
-    static function authUser(string $email, string $password): ?User {
+    //READ a single User by email
+    static function getUserByEmail(string $email): ?User {
 
         $sql = 'SELECT * FROM Users WHERE email = :email';
 
@@ -44,11 +44,7 @@ class UserDAO {
 
         // Return the result
         $result = self::$db->singleResult();
-        if ($result && password_verify($password, $result->getPassword())) {
-            return $result;
-        } else {
-            return null;
-        }
+        return $result ? $result : null;
     }
 
     //Create a User
@@ -62,7 +58,7 @@ class UserDAO {
         // Bind a parameter
         self::$db->bind(':name', $user->getName());
         self::$db->bind(':email', $user->getEmail());
-        self::$db->bind(':password', password_hash($user->getPassword(), PASSWORD_DEFAULT));
+        self::$db->bind(':password', $user->getPassword());
 
         // Execute
         self::$db->execute();
@@ -92,33 +88,16 @@ class UserDAO {
     }
 
     //Update password
-    static function updatePassword(int $id, string $curPassword, string $newPassword): bool {
+    static function updatePassword(User $user): bool {
 
-        $sql1 = 'SELECT * FROM Users WHERE id = :id';
-
-        // Query
-        self::$db->query($sql1);
-
-        // Bind a parameter
-        self::$db->bind(':id', $id);
-
-        // Execute
-        self::$db->execute();
-
-        // Return the result
-        $result = self::$db->singleResult();
-        if (!($result && password_verify($curPassword, $result->getPassword()))) {
-            return false;
-        }
-
-        $sql2 = 'UPDATE Users SET password = :password WHERE id = :id';
+        $sql = 'UPDATE Users SET password = :password WHERE id = :id';
 
         // Query
-        self::$db->query($sql2);
+        self::$db->query($sql);
 
         // Bind a parameter
-        self::$db->bind(':id', $id);
-        self::$db->bind(':password', password_hash($newPassword, PASSWORD_DEFAULT));
+        self::$db->bind(':id', $user->getId());
+        self::$db->bind(':password', $user->getPassword());
 
         // Execute
         self::$db->execute();

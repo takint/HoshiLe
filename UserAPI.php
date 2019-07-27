@@ -20,15 +20,20 @@ switch ($_SERVER['REQUEST_METHOD']) {
         if (isset($requestData->id)) {
             $user = UserDAO::getUser($requestData->id);
         } else if (isset($requestData->email) && isset($requestData->password)) {
-            $user = UserDAO::authUser($requestData->email, $requestData->password);
+            $user = UserDAO::getUserByEmail($requestData->email);
+            if (!($user && $user->verifyPassword($requestData->password))) {
+                $user = null;
+            }
         }
         header('Content-Type: application/json');
         echo json_encode(is_null($user) ? null : $user->serialize());
         break;
 
+    // Create a user.
     case 'POST':
         $user = User::deserialize($requestData, false, true);
         try {
+            $user->setHashedPassword($user->getPassword());
             $result = UserDAO::createUser($user);
         } catch (PDOException $ex) {
             $result = null;
@@ -37,6 +42,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
         echo json_encode($result);
         break;
 
+    // Update user's profile or password.
     case 'PUT':
         if (isset($requestData->name) && isset($requestData->email)) {
             $user = User::deserialize($requestData);
@@ -47,8 +53,13 @@ switch ($_SERVER['REQUEST_METHOD']) {
             }
         } else if (isset($requestData->curPassword) && isset($requestData->newPassword)) {
             try {
-                $result = UserDAO::updatePassword(
-                    $requestData->id, $requestData->curPassword, $requestData->newPassword);
+                $user = UserDAO::getUser($requestData->id);
+                if ($user && $user->verifyPassword($requestData->curPassword)) {
+                    $user->setHashedPassword($requestData->newPassword);
+                    $result = UserDAO::updatePassword($user);
+                } else {
+                    $result = false;
+                }
             } catch (PDOException $ex) {
                 $result = false;
             }
