@@ -33,6 +33,9 @@ class Session {
         self::$userId = null;
         self::$userName = null;
         unset($_SESSION['user']);
+
+        self::$shoppingCart = array();
+        self::updateShoppingCart();
     }
 
     public static function getShoppingCart(array $products): array {
@@ -56,24 +59,11 @@ class Session {
     }
 
     public static function addProduct(int $productId) {
-        $found = false;
-        foreach (self::$shoppingCart as $tuple) {
-            if ($tuple->productId == $productId) {
-                $tuple->quantity++;
-                $found = true;
-                break;
-            }
-        }
-        if (!$found) {
-            $tuple = new stdClass();
-            $tuple->productId = $productId;
-            $tuple->quantity = 1;
-            self::$shoppingCart[] = $tuple;
-        }
-        $_SESSION['shoppingCart'] = json_encode(self::$shoppingCart);
+        self::incrementProduct($productId, 1);
+        self::updateShoppingCart();
     }
 
-    public static function updateCart(int $productId, int $quantity) {
+    public static function updateQuantity(int $productId, int $quantity) {
         foreach (self::$shoppingCart as $key => $tuple) {
             if ($tuple->productId == $productId) {
                 if ($quantity > 0) {
@@ -85,7 +75,48 @@ class Session {
                 break;
             }
         }
-        $_SESSION['shoppingCart'] = json_encode(self::$shoppingCart);
+        self::updateShoppingCart();
+    }
+
+    public static function mergeShoppingCart(array $savedCart = null) {
+        if (is_array($savedCart)) {
+            foreach ($savedCart as $tuple) {
+                if (isset($tuple->productId) && isset($tuple->quantity)) {
+                    self::incrementProduct($tuple->productId, $tuple->quantity);
+                }
+            }
+        }
+        self::updateShoppingCart();
+    }
+
+    private static function incrementProduct(int $productId, int $incr) {
+        $found = false;
+        foreach (self::$shoppingCart as $tuple) {
+            if ($tuple->productId == $productId) {
+                $tuple->quantity += $incr;
+                $found = true;
+                break;
+            }
+        }
+        if (!$found) {
+            $tuple = new stdClass();
+            $tuple->productId = $productId;
+            $tuple->quantity = $incr;
+            self::$shoppingCart[] = $tuple;
+        }
+    }
+
+    private static function updateShoppingCart() {
+        $encodedCart = json_encode(self::$shoppingCart);
+        $_SESSION['shoppingCart'] = $encodedCart;
+
+        if (!is_null(self::$userId)) {
+            $params = array(
+                'id' => self::$userId,
+                'shoppingCart' => $encodedCart
+            );
+            $result = RestClient::call('PUT', USER_API, $params);
+        }
     }
 }
 

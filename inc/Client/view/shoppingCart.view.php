@@ -27,14 +27,14 @@
               <td><?php echo htmlspecialchars($tuple->product->getName()); ?></td>
               <td>
                 <form class="d-inline" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-                  <input type="hidden" name="action" value="updateCart">
+                  <input type="hidden" name="action" value="updateQuantity">
                   <input type="hidden" name="productId" value="<?php echo $tuple->product->getId(); ?>">
                   <input type="hidden" name="quantity" value="<?php echo $tuple->quantity - 1; ?>">
                   <button class="btn btn-sm btn-light" type="submit">-</button>
                 </form>
                 <span class="mx-2"><?php echo $tuple->quantity; ?></span>
                 <form class="d-inline" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-                  <input type="hidden" name="action" value="updateCart">
+                  <input type="hidden" name="action" value="updateQuantity">
                   <input type="hidden" name="productId" value="<?php echo $tuple->product->getId(); ?>">
                   <input type="hidden" name="quantity" value="<?php echo $tuple->quantity + 1; ?>">
                   <button class="btn btn-sm btn-light" type="submit">+</button>
@@ -54,7 +54,17 @@
         </tfoot>
       </table>
       <div class="text-center">
-        <button class="btn btn-lg btn-primary w-25" <?php if (empty($shoppingCart)) echo 'disabled' ?>>Purchase</button>
+        <form class="d-inline" method="<?php echo is_null(Session::$userId) ? 'get' : 'post'; ?>" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+          <?php if (is_null(Session::$userId)) { ?>
+            <input type="hidden" name="page" value="login">
+            <input type="hidden" name="forPurchase" value="true">
+          <?php } else { ?>
+            <input type="hidden" name="action" value="updateQuantity">
+          <?php } ?>
+          <button class="btn btn-lg btn-primary w-25" type="submit" <?php if (empty($shoppingCart)) echo 'disabled' ?>>
+            <?php echo is_null(Session::$userId) ? 'Please Log in' : 'Purchase'; ?>
+          </button>
+        </form>
       </div>
       <div class="text-center mt-2">
         <a class="btn btn-link" href="<?php echo $_SERVER['PHP_SELF']; ?>">Continue Shopping</a>

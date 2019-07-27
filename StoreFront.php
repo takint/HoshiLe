@@ -21,7 +21,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($result) {
             $user = User::deserialize($result);
             Session::setUser($user->getId(), $user->getName());
-            header('Location: ' . $_SERVER['PHP_SELF']);
+            Session::mergeShoppingCart(json_decode($user->getShoppingCart()));
+            if ($_POST['forPurchase'] == 'true') {
+                header('Location: ' . $_SERVER['PHP_SELF'] . '?page=shoppingCart');
+            } else {
+                header('Location: ' . $_SERVER['PHP_SELF']);
+            }
             exit;
         } else {
             $errors[] = 'Oops, email or password is incorrect.';
@@ -42,7 +47,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $result = RestClient::call('POST', USER_API, $params);
             if ($result) {
                 Session::setUser($result, $_POST['name']);
-                header('Location: ' . $_SERVER['PHP_SELF']);
+                Session::mergeShoppingCart();
+                if ($_POST['forPurchase'] == 'true') {
+                    header('Location: ' . $_SERVER['PHP_SELF'] . '?page=shoppingCart');
+                } else {
+                    header('Location: ' . $_SERVER['PHP_SELF']);
+                }
                 exit;
             } else {
                 $errors[] = 'Sorry, failed to create a user.';
@@ -100,8 +110,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header('Location: ' . $_SERVER['PHP_SELF'] . '?page=shoppingCart');
         exit;
     }
-    if ($_POST['action'] == 'updateCart' && isset($_POST['productId']) && isset($_POST['quantity'])) {
-        Session::updateCart($_POST['productId'], $_POST['quantity']);
+    if ($_POST['action'] == 'updateQuantity' && isset($_POST['productId']) && isset($_POST['quantity'])) {
+        Session::updateQuantity($_POST['productId'], $_POST['quantity']);
         header('Location: ' . $_SERVER['PHP_SELF'] . '?page=shoppingCart');
         exit;
     }
@@ -115,9 +125,9 @@ ClientPage::navigator();
 if (!empty($errors)) {
     ClientPage::showErrors($errors);
 } else if (isset($_GET['page']) && $_GET['page'] == 'login') {
-    ClientPage::userLogin();
+    ClientPage::userLogin($_GET['forPurchase'] == 'true');
 } else if (isset($_GET['page']) && $_GET['page'] == 'signup') {
-    ClientPage::userSignup();
+    ClientPage::userSignup($_GET['forPurchase'] == 'true');
 } else if (isset($_GET['page']) && $_GET['page'] == 'profile') {
     $result = RestClient::call('GET', USER_API, array('id' => Session::$userId));
     if ($result) {
