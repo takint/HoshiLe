@@ -22,7 +22,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $user = User::deserialize($result);
             Session::setUser($user->getId(), $user->getName());
             Session::mergeShoppingCart(json_decode($user->getShoppingCart()));
-            header('Location: ' . $_SERVER['PHP_SELF']);
+            if ($_POST['forPurchase'] == 'true') {
+                header('Location: ' . $_SERVER['PHP_SELF'] . '?page=shoppingCart');
+            } else {
+                header('Location: ' . $_SERVER['PHP_SELF']);
+            }
             exit;
         } else {
             $errors[] = 'Oops, email or password is incorrect.';
@@ -44,7 +48,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if ($result) {
                 Session::setUser($result, $_POST['name']);
                 Session::mergeShoppingCart();
-                header('Location: ' . $_SERVER['PHP_SELF']);
+                if ($_POST['forPurchase'] == 'true') {
+                    header('Location: ' . $_SERVER['PHP_SELF'] . '?page=shoppingCart');
+                } else {
+                    header('Location: ' . $_SERVER['PHP_SELF']);
+                }
                 exit;
             } else {
                 $errors[] = 'Sorry, failed to create a user.';
@@ -117,9 +125,9 @@ ClientPage::navigator();
 if (!empty($errors)) {
     ClientPage::showErrors($errors);
 } else if (isset($_GET['page']) && $_GET['page'] == 'login') {
-    ClientPage::userLogin();
+    ClientPage::userLogin($_GET['forPurchase'] == 'true');
 } else if (isset($_GET['page']) && $_GET['page'] == 'signup') {
-    ClientPage::userSignup();
+    ClientPage::userSignup($_GET['forPurchase'] == 'true');
 } else if (isset($_GET['page']) && $_GET['page'] == 'profile') {
     $result = RestClient::call('GET', USER_API, array('id' => Session::$userId));
     if ($result) {

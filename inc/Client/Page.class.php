@@ -16,11 +16,11 @@ class ClientPage {
         include 'view/footer.view.php';
     }
 
-    public static function userLogin() {
+    public static function userLogin(bool $forPurchase) {
         include 'view/userLogin.view.php';
     }
 
-    public static function userSignup() {
+    public static function userSignup(bool $forPurchase) {
         include 'view/userSignup.view.php';
     }
 
