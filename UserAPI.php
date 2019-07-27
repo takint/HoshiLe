@@ -63,6 +63,14 @@ switch ($_SERVER['REQUEST_METHOD']) {
             } catch (PDOException $ex) {
                 $result = false;
             }
+        } else if (isset($requestData->shoppingCart)) {
+            try {
+                $user = UserDAO::getUser($requestData->id);
+                $user->setShoppingCart($requestData->shoppingCart);
+                $result = UserDAO::updateShoppingCart($user);
+            } catch (PDOException $ex) {
+                $result = false;
+            }
         } else {
             $result = false;
         }

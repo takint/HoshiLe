@@ -16,7 +16,7 @@
         </li>
       </ul>
       <ul class="navbar-nav">
-        <?php if (is_null(Session::$userId) || is_null(Session::$userName)) { ?>
+        <?php if (is_null(Session::$userId)) { ?>
           <li class="nav-item">
             <a class="nav-link" href="<?php echo $_SERVER['PHP_SELF']; ?>?page=login">Log in</a>
           </li>

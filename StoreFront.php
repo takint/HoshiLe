@@ -21,6 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($result) {
             $user = User::deserialize($result);
             Session::setUser($user->getId(), $user->getName());
+            Session::mergeShoppingCart(json_decode($user->getShoppingCart()));
             header('Location: ' . $_SERVER['PHP_SELF']);
             exit;
         } else {
@@ -42,6 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $result = RestClient::call('POST', USER_API, $params);
             if ($result) {
                 Session::setUser($result, $_POST['name']);
+                Session::mergeShoppingCart();
                 header('Location: ' . $_SERVER['PHP_SELF']);
                 exit;
             } else {
@@ -100,8 +102,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header('Location: ' . $_SERVER['PHP_SELF'] . '?page=shoppingCart');
         exit;
     }
-    if ($_POST['action'] == 'updateCart' && isset($_POST['productId']) && isset($_POST['quantity'])) {
-        Session::updateCart($_POST['productId'], $_POST['quantity']);
+    if ($_POST['action'] == 'updateQuantity' && isset($_POST['productId']) && isset($_POST['quantity'])) {
+        Session::updateQuantity($_POST['productId'], $_POST['quantity']);
         header('Location: ' . $_SERVER['PHP_SELF'] . '?page=shoppingCart');
         exit;
     }

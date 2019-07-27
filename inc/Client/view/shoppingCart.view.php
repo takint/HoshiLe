@@ -27,14 +27,14 @@
               <td><?php echo htmlspecialchars($tuple->product->getName()); ?></td>
               <td>
                 <form class="d-inline" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-                  <input type="hidden" name="action" value="updateCart">
+                  <input type="hidden" name="action" value="updateQuantity">
                   <input type="hidden" name="productId" value="<?php echo $tuple->product->getId(); ?>">
                   <input type="hidden" name="quantity" value="<?php echo $tuple->quantity - 1; ?>">
                   <button class="btn btn-sm btn-light" type="submit">-</button>
                 </form>
                 <span class="mx-2"><?php echo $tuple->quantity; ?></span>
                 <form class="d-inline" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-                  <input type="hidden" name="action" value="updateCart">
+                  <input type="hidden" name="action" value="updateQuantity">
                   <input type="hidden" name="productId" value="<?php echo $tuple->product->getId(); ?>">
                   <input type="hidden" name="quantity" value="<?php echo $tuple->quantity + 1; ?>">
                   <button class="btn btn-sm btn-light" type="submit">+</button>

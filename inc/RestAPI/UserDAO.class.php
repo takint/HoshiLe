@@ -105,6 +105,25 @@ class UserDAO {
         // Return the result
         return self::$db->rowCount() > 0;
     }
+
+    //Update shopping cart
+    static function updateShoppingCart(User $user): bool {
+
+        $sql = 'UPDATE Users SET shoppingCart = :shoppingCart WHERE id = :id';
+
+        // Query
+        self::$db->query($sql);
+
+        // Bind a parameter
+        self::$db->bind(':id', $user->getId());
+        self::$db->bind(':shoppingCart', $user->getShoppingCart());
+
+        // Execute
+        self::$db->execute();
+
+        // Return the result
+        return self::$db->rowCount() > 0;
+    }
 }
 
 ?>
