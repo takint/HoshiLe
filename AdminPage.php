@@ -2,6 +2,7 @@
 
 require_once("AdminHeader.inc.php");
 
+// Controller parser
 $controller = isset($_GET["controller"]) ? $_GET["controller"] : "";
 $action = isset($_GET["action"]) ? $_GET["action"] : "list"; // Default will be view
 $sortBy = isset($_GET["sort"]) ? $_GET["sort"] : "";
@@ -15,7 +16,11 @@ AdminPage::body($controller);
 // Routing
 switch($controller){
     case "product":
-        ProductController::actionResult($action, $sortBy, $data);
+        if(!empty($_POST)) {
+            ProductController::postActionResult($_POST);
+        } else {
+            ProductController::getActionResult($action, $sortBy, $data);
+        }
     break;
     case "order":
     break;

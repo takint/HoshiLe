@@ -27,6 +27,15 @@ class AdminPage {
     public static function productDetails($product, $mode = "view") {
         include_once('views/product-details.view.php');
     }
+
+    public static function redirectToList($controllerName){ ?>
+        <!doctype html>
+        <html lang="en">
+            <head>
+                <meta http-equiv='refresh' content="0;URL='?controller=<?=$controllerName?>'">
+            </head>
+        </html>
+    <?php }
 }
 
 ?>

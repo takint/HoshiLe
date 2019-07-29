@@ -37,8 +37,33 @@ switch ($_SERVER['REQUEST_METHOD']) {
             header('Content-Type: application/json');
             echo json_encode($stdProducts);
         }
-        break;
+    break;
+    case 'POST': 
+        if(!empty($requestData)){
+            $np = Product::deserialize($requestData);
+            $result = ProductDAO::createProduct($np);
 
+            header('Content-Type: application/json');
+            echo json_encode($result);
+        }
+    break;
+    case 'PUT': 
+        if(!empty($requestData)){
+            $np = Product::deserialize($requestData);
+            $result = ProductDAO::updateProduct($np);
+
+            header('Content-Type: application/json');
+            echo json_encode($result);
+        }
+    break;
+    case 'DELETE': 
+        if (isset($requestData->id)) {
+            $result = ProductDAO::deleteProduct($requestData->id);
+
+            header('Content-Type: application/json');
+            echo json_encode($result);
+        }
+    break;
     default:
         echo json_encode(array('message' => 'Você fala HTTP?'));
         break;
