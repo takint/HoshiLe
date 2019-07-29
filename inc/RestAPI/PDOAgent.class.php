@@ -79,6 +79,11 @@ class PDOAgent {
     public function lastInsertedId() : int {
         return $this->pdo->lastInsertId();
     }
+
+    //Get the debug parms;
+    public function debugDumpParams(){  
+        return $this->stmt->debugDumpParams();  
+    }
 }
 
 ?>

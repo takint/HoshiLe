@@ -58,7 +58,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
     break;
     case 'DELETE': 
         if (isset($requestData->id)) {
-            $result = ProductDAO::deleteProduct($np);
+            $result = ProductDAO::deleteProduct($requestData->id);
 
             header('Content-Type: application/json');
             echo json_encode($result);

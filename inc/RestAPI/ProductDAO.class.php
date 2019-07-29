@@ -61,7 +61,7 @@ class ProductDAO {
         //Execute the query
         self::$db->execute();
 
-        return self::$db->lastInsertId();
+        return self::$db->lastInsertedId();
     }
 
     static function updateProduct(Product $updateProduct) : int {
@@ -81,18 +81,21 @@ class ProductDAO {
             // Execute the query
             self::$db->execute();
 
+            $count = self::$db->rowCount();
+
             // Check the appropriate updates
-            if (self::$db->rowCount() !=1) {
+            if ($count < 0) {
                 throw new Exception("There was an error updating the database!");
             }
 
         } catch (Exception $ex) {
             echo $ex->getMessage();
             self::$db->debugDumpParams();
+            return -1;
         }
 
         //Get the number of affected rows
-        return self::$db->rowCount();
+        return $count;
     }
 
     static function deleteProduct(int $productId) : bool {
@@ -109,7 +112,7 @@ class ProductDAO {
             self::$db->execute();
 
             // Check the appropriate delete
-            if (self::$db->rowCount() !=1) {
+            if (self::$db->rowCount() != 1) {
                 throw new Exception("There was an error deleting the database!");
             }
 
