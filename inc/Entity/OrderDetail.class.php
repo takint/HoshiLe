@@ -1,27 +1,22 @@
 <?php
 
-// +-----------+---------+------+-----+---------+-------+
-// | Field     | Type    | Null | Key | Default | Extra |
-// +-----------+---------+------+-----+---------+-------+
-// | orderId   | int(11) | NO   | PRI | NULL    |       |
-// | detailId  | int(11) | NO   | PRI | NULL    |       |
-// | productId | int(11) | NO   |     | NULL    |       |
-// | quantity  | int(11) | NO   |     | NULL    |       |
-// +-----------+---------+------+-----+---------+-------+
+// +-----------+---------+------+-----+---------+----------------+
+// | Field     | Type    | Null | Key | Default | Extra          |
+// +-----------+---------+------+-----+---------+----------------+
+// | id        | int(11) | NO   | PRI | NULL    | auto_increment |
+// | orderId   | int(11) | NO   |     | NULL    |                |
+// | productId | int(11) | NO   |     | NULL    |                |
+// | quantity  | int(11) | NO   |     | NULL    |                |
+// +-----------+---------+------+-----+---------+----------------+
 
-class OrderDetails {
-    private $orderId  ;
-    private $detailId ;
+class OrderDetail {
+    private $orderId;
     private $productId;
-    private $quantity ;
+    private $quantity;
 
     // Getter
     public function getOrderId() : int {
         return $this->orderId;
-    }
-
-    public function getDetailId() : int {
-        return $this->detailId;
     }
 
     public function getProductId() : int {
@@ -37,10 +32,6 @@ class OrderDetails {
         $this->orderId = $value;
     }
 
-    public function setDetailId(int $value) {
-        $this->detailId = $value;
-    }
-
     public function setProductId(int $value) {
         $this->productId = $value;
     }
@@ -51,9 +42,9 @@ class OrderDetails {
 
     public function serialize() : stdClass {
         $obj = new stdClass;
-        
+
+        $obj->id = $this->id;
         $obj->orderId = $this->orderId;
-        $obj->detailId = $this->detailId;
         $obj->productId = $this->productId;
         $obj->quantity = $this->quantity;
 
