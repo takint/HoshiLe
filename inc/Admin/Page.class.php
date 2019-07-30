@@ -24,9 +24,30 @@ class AdminPage {
         include_once('views/product-list.view.php');
     }
 
-    public static function productDetails($product, $mode = "view") {
+    public static function productDetails($product, $mode = "view", $errors = []) {
         include_once('views/product-details.view.php');
     }
+
+    public static function customerList($lstCustomers) {
+        include_once('views/customer-list.view.php');
+    }
+
+    public static function customerDetails($customer, $mode = "view", $errors = []) {
+        include_once('views/customer-details.view.php');
+    }
+    
+    public static function orderList($lstOrders) {
+        include_once('views/order-list.view.php');
+    }
+
+    public static function orderDetails($order, $mode = "view", $errors = []) {
+        include_once('views/order-details.view.php');
+    }
+
+    public static function pageNotFound(){ ?>
+        <h1>404</h1>
+        <p><strong>Page not found</strong></p>
+    <?php }
 
     public static function redirectToList($controllerName){ ?>
         <!doctype html>

@@ -24,8 +24,9 @@ insert into Products(name, brand, price, imageUrl) values ('Smart Watch', 'Mobvo
 
 -- Insert data for User table
 -- All users have password 1234
-insert into Users(name, email, password, shoppingCart) values ('Karil Lyddy', 'klyddy0@360.cn', '$2y$10$KwQ93uY6Iqiq9vjYlVDrf.I4hkRUQHg9m3ig9o1NkM8r8izK/xkDe', '');
-insert into Users(name, email, password, shoppingCart) values ('Josiah Ridehalgh', 'jridehalgh1@tripod.com', '$2y$10$KwQ93uY6Iqiq9vjYlVDrf.I4hkRUQHg9m3ig9o1NkM8r8izK/xkDe', '');
-insert into Users(name, email, password, shoppingCart) values ('Ailey Meader', 'ameader2@constantcontact.com', '$2y$10$KwQ93uY6Iqiq9vjYlVDrf.I4hkRUQHg9m3ig9o1NkM8r8izK/xkDe', '');
-insert into Users(name, email, password, shoppingCart) values ('Halimeda Varcoe', 'hvarcoe3@amazon.com', '$2y$10$KwQ93uY6Iqiq9vjYlVDrf.I4hkRUQHg9m3ig9o1NkM8r8izK/xkDe', '');
-insert into Users(name, email, password, shoppingCart) values ('Normand Skypp', 'nskypp4@wsj.com', '$2y$10$KwQ93uY6Iqiq9vjYlVDrf.I4hkRUQHg9m3ig9o1NkM8r8izK/xkDe', '');
+insert into Users(name, email, password, shoppingCart, isAdmin) values ('Sysadmin', 'admin@email.ca', '$2y$10$KwQ93uY6Iqiq9vjYlVDrf.I4hkRUQHg9m3ig9o1NkM8r8izK/xkDe', '', 1);
+insert into Users(name, email, password, shoppingCart, isAdmin) values ('Karil Lyddy', 'klyddy0@360.ca', '$2y$10$KwQ93uY6Iqiq9vjYlVDrf.I4hkRUQHg9m3ig9o1NkM8r8izK/xkDe', '', 0);
+insert into Users(name, email, password, shoppingCart, isAdmin) values ('Josiah Ridehalgh', 'jridehalgh1@tripod.com', '$2y$10$KwQ93uY6Iqiq9vjYlVDrf.I4hkRUQHg9m3ig9o1NkM8r8izK/xkDe', '', 0);
+insert into Users(name, email, password, shoppingCart, isAdmin) values ('Ailey Meader', 'ameader2@constantcontact.com', '$2y$10$KwQ93uY6Iqiq9vjYlVDrf.I4hkRUQHg9m3ig9o1NkM8r8izK/xkDe', '', 0);
+insert into Users(name, email, password, shoppingCart, isAdmin) values ('Halimeda Varcoe', 'hvarcoe3@amazon.com', '$2y$10$KwQ93uY6Iqiq9vjYlVDrf.I4hkRUQHg9m3ig9o1NkM8r8izK/xkDe', '', 0);
+insert into Users(name, email, password, shoppingCart, isAdmin) values ('Normand Skypp', 'nskypp4@wsj.com', '$2y$10$KwQ93uY6Iqiq9vjYlVDrf.I4hkRUQHg9m3ig9o1NkM8r8izK/xkDe', '', 0);

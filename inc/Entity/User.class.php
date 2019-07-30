@@ -5,9 +5,10 @@
 // +--------------+--------------+------+-----+---------+----------------+
 // | id           | int(11)      | NO   | PRI | NULL    | auto_increment |
 // | name         | varchar(255) | NO   |     | NULL    |                |
-// | email        | varchar(255) | NO   |     | NULL    |                |
+// | email        | varchar(255) | NO   | UNI | NULL    |                |
 // | password     | varchar(255) | NO   |     | NULL    |                |
 // | shoppingCart | text         | YES  |     | NULL    |                |
+// | isAdmin      | bit(1)       | YES  |     | NULL    |                |
 // +--------------+--------------+------+-----+---------+----------------+
 
 class User extends BaseEntity {
@@ -16,6 +17,7 @@ class User extends BaseEntity {
     private $email;
     private $password;
     private $shoppingCart;
+    private $isAdmin;
 
     // Getter
     public function getName() : string {
@@ -30,8 +32,12 @@ class User extends BaseEntity {
         return $this->password;
     }
 
-    public function getShoppingCart() : ?string{
+    public function getShoppingCart() : ? string{
         return $this->shoppingCart;
+    }
+
+    public function getIsAdmin() : bool{
+        return $this->isAdmin;
     }
 
     // Setter
@@ -49,6 +55,10 @@ class User extends BaseEntity {
 
     public function setShoppingCart(?string $value) {
         $this->shoppingCart = $value;
+    }
+
+    public function setIsAdmin(bool $value) {
+        $this->isAdmin = $value;
     }
 
     // Password
@@ -71,6 +81,7 @@ class User extends BaseEntity {
             $obj->password = $this->password;
         }
         $obj->shoppingCart = $this->shoppingCart;
+        $obj->isAdmin = $this->isAdmin;
 
         return $obj;
     }
@@ -87,7 +98,8 @@ class User extends BaseEntity {
             $user->setPassword($obj->password);
         }
         $user->setShoppingCart($obj->shoppingCart);
-
+        $user->setIsAdmin($obj->isAdmin);
+        
         return $user;
     }
 }

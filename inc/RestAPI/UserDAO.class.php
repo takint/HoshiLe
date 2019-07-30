@@ -28,6 +28,24 @@ class UserDAO {
         return $result ? $result : null;
     }
 
+    //READ a list of Users
+    static function getUsers(array $ids = null): array {
+
+        $sql = 'SELECT * FROM Users';
+        if (!empty($ids)) {
+            $sql .= ' WHERE id in (' . implode(', ', $ids) . ')';
+        }
+
+        // Query
+        self::$db->query($sql);
+
+        // Execute
+        self::$db->execute();
+
+        // Return the result
+        return self::$db->getResultSet();
+    }
+
     //READ a single User by email
     static function getUserByEmail(string $email): ?User {
 

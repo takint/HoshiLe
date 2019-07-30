@@ -1,27 +1,27 @@
 <?php
 
-class ProductController {
+class CustomerController {
     private static $sortType = "";
 
     public static function getActionResult($action, $sortBy = "", $data = null) {
         self::$sortType = $sortBy;
         switch($action){
             case "view": 
-                $jproduct = RestClient::call("GET", PRODUCT_API, array("id" => $data));
-                $prod = Product::deserialize($jproduct);
-                AdminPage::productDetails($prod, "view");
+                $jcustomer = RestClient::call("GET", USER_API, array("id" => $data));
+                $cust = User::deserialize($jcustomer);
+                AdminPage::customerDetails($cust, "view");
             break;
             case "add":
-                $np = new Product();
-                AdminPage::productDetails($np, "add");
+                $nc = new User();
+                AdminPage::customerDetails($nc, "add");
             break;
             case "edit":
-                $jproduct = RestClient::call("GET", PRODUCT_API, array("id" =>$data));
-                $prod = Product::deserialize($jproduct);
-                AdminPage::productDetails($prod, "edit");
+                $jcustomer = RestClient::call("GET", USER_API, array("id" => $data));
+                $cust = User::deserialize($jcustomer);
+                AdminPage::customerDetails($cust, "edit");
             break;
             case "delete":
-                $isDeleted = RestClient::call("DELETE", PRODUCT_API, array("id" =>$data));
+                $isDeleted = RestClient::call("DELETE", USER_API, array("id" => $data));
                 if($isDeleted){
                    self::displayList($sortBy);
                 }
@@ -38,20 +38,20 @@ class ProductController {
         if(count($validation) == 0){
             // Product have id it must be an update action
             if($postData['id'] != 0) {
-                $result = RestClient::call("PUT", PRODUCT_API, $postData);
+                $result = RestClient::call("PUT", USER_API, $postData);
             } else { // otherwise, it is an insert action
-                $result =  RestClient::call("POST", PRODUCT_API, $postData);
+                $result =  RestClient::call("POST", USER_API, $postData);
             }
 
-            AdminPage::redirectToList("product");
+            AdminPage::redirectToList("customer");
         } else {
-            $np = new Product();
-            $np->setId($postData['id']);
-            $np->setName($postData['name']);
-            $np->setBrand($postData['brand']);
-            $np->setPrice($postData['price']);
-            $np->setImageUrl($postData['imageUrl']);
-            AdminPage::productDetails($np, "edit", $validation);
+            $np = new User();
+            // $np->setId($postData['id']);
+            // $np->setName($postData['name']);
+            // $np->setBrand($postData['brand']);
+            // $np->setPrice($postData['price']);
+            // $np->setImageUrl($postData['imageUrl']);
+            // AdminPage::customerDetails($np, "edit", $validation);
         }
     }
 
@@ -72,14 +72,14 @@ class ProductController {
     }
 
     private static function displayList(){
-        $jproducts = RestClient::call("GET", PRODUCT_API);
-        $products = array_map('Product::deserialize', $jproducts);
-        usort($products, "self::compareProduct");
+        $jcustomers = RestClient::call("GET", USER_API);
+        $customers = array_map('User::deserialize', $jcustomers);
+        usort($customers, "self::compareUser");
 
-        AdminPage::productList($products);
+        AdminPage::customerList($customers);
     }
 
-    private static function compareProduct(Product $p1, Product $p2){
+    private static function compareUser(User $p1, User $p2){
         if(self::$sortType != ""){
             switch(self::$sortType){   
                 case "name" : return $p1->getName() <=> $p2->getName();

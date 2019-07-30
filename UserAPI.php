@@ -24,7 +24,19 @@ switch ($_SERVER['REQUEST_METHOD']) {
             if (!($user && $user->verifyPassword($requestData->password))) {
                 $user = null;
             }
+        } else {
+            $customers = UserDAO::getUsers();
+            $stdCustomers = array();
+
+            foreach ($customers as $cust) {
+                $stdCustomers[] = $cust->serialize();
+            }
+
+            header('Content-Type: application/json');
+            echo json_encode($stdCustomers);
+            break;
         }
+
         header('Content-Type: application/json');
         echo json_encode(is_null($user) ? null : $user->serialize());
         break;
