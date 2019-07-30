@@ -1,7 +1,16 @@
 <h2>
- Editing - <?= $product->getName()?>
+  <?= $product->getId() != 0 ? "Editing " . $product->getName() : "Adding"?>
 </h2>
-
+<?php if(count($errors) != 0) {?>
+  <div class="alert alert-danger">
+    <strong>Please fix these errrors below</strong>
+    <ul>
+      <?php foreach($errors as $msg){?>
+        <li><?= $msg?></li>
+      <?php } ?>
+    </ul>
+  </div>
+<?php } ?>
 <form method="post" action="<?= $_SERVER["PHP_SELF"]."?controller=product&action=".$mode?>">
   <input type="hidden" name="id" value="<?= $product->getId()?>">
   <div class="form-group">

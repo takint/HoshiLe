@@ -24,7 +24,7 @@ class AdminPage {
         include_once('views/product-list.view.php');
     }
 
-    public static function productDetails($product, $mode = "view") {
+    public static function productDetails($product, $mode = "view", $errors = []) {
         include_once('views/product-details.view.php');
     }
 
