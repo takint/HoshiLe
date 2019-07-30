@@ -79,7 +79,7 @@ class CustomerController {
         AdminPage::customerList($customers);
     }
 
-    private static function compareProduct(User $p1, User $p2){
+    private static function compareUser(User $p1, User $p2){
         if(self::$sortType != ""){
             switch(self::$sortType){   
                 case "name" : return $p1->getName() <=> $p2->getName();

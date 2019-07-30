@@ -11,22 +11,20 @@
     <table class="table table-striped table-sm">
         <thead>
         <tr>
-            <th>Product</th>
-            <th><a href="?controller=product&sort=id">Product Id</a></th>
-            <th><a href="?controller=product&sort=name">Product Name</a></th>
-            <th><a href="?controller=product&sort=brand">Brand</a></th>
-            <th><a href="?controller=product&sort=price">Price</a></th>
+            <th><a href="?controller=product&sort=id">Id</a></th>
+            <th><a href="?controller=product&sort=name">Full Name</a></th>
+            <th><a href="?controller=product&sort=email">Email</a></th>
+            <th><a href="?controller=product&sort=isadmin">Admin</a></th>
             <th>Action</th>
         </tr>
         </thead>
         <tbody>
-        <?php foreach($lstProducts as $prod) { ?>
+        <?php foreach($lstCustomers as $prod) { ?>
             <tr>
-                <td><img width="100" height="100" src="<?= $prod->getImageUrl()?>"/></td>
                 <td><?= $prod->getId()?></td>
                 <td><?= $prod->getName()?></td>
-                <td><?= $prod->getBrand()?></td>
-                <td><?= $prod->getPrice()?></td>
+                <td><?= $prod->getEmail()?></td>
+                <td><?= $prod->getIsAdmin() ? "Yes" : "Not"?></td>
                 <td>
                     <a href="?controller=product&action=edit&id=<?= $prod->getId()?>" class="btn btn-sm btn-primary">Edit</a>
                     <a href="?controller=product&action=delete&id=<?= $prod->getId()?>" class="btn btn-sm btn-danger">Delete</a>

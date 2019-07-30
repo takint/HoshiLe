@@ -57,7 +57,7 @@ class User extends BaseEntity {
         $this->shoppingCart = $value;
     }
 
-    public function setIsAdmin(bool $value) : bool{
+    public function setIsAdmin(bool $value) {
         $this->isAdmin = $value;
     }
 
