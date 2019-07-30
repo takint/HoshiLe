@@ -8,7 +8,7 @@
 // | email        | varchar(255) | NO   | UNI | NULL    |                |
 // | password     | varchar(255) | NO   |     | NULL    |                |
 // | shoppingCart | text         | YES  |     | NULL    |                |
-// | isAdmin      | bit(1)       | YES  |     | NULL    |                |
+// | isAdmin      | bit(1)       | NO   |     | b'0'    |                |
 // +--------------+--------------+------+-----+---------+----------------+
 
 class User extends BaseEntity {
@@ -32,7 +32,7 @@ class User extends BaseEntity {
         return $this->password;
     }
 
-    public function getShoppingCart() : ? string{
+    public function getShoppingCart() : ?string{
         return $this->shoppingCart;
     }
 
@@ -86,20 +86,24 @@ class User extends BaseEntity {
         return $obj;
     }
 
-    public static function deserialize(stdClass $obj, bool $includeId = true, bool $includePassword = false) : User {
+    public static function deserialize(stdClass $obj) : User {
         $user = new User();
 
-        if ($includeId) {
+        if (isset($obj->id)) {
             $user->setId($obj->id);
         }
         $user->setName($obj->name);
         $user->setEmail($obj->email);
-        if ($includePassword) {
+        if (isset($obj->password)) {
             $user->setPassword($obj->password);
         }
-        $user->setShoppingCart($obj->shoppingCart);
-        $user->setIsAdmin($obj->isAdmin);
-        
+        if (isset($obj->shoppingCart)) {
+            $user->setShoppingCart($obj->shoppingCart);
+        }
+        if (isset($obj->isAdmin)) {
+            $user->setIsAdmin($obj->isAdmin);
+        }
+
         return $user;
     }
 }
