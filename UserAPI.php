@@ -43,7 +43,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
     // Create a user.
     case 'POST':
-        $user = User::deserialize($requestData, false, true);
+        $user = User::deserialize($requestData);
         try {
             $user->setHashedPassword($user->getPassword());
             $result = UserDAO::createUser($user);

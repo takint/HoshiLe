@@ -9,7 +9,7 @@ CREATE TABLE Users (
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     shoppingCart TEXT,
-    isAdmin bit
+    isAdmin BIT NOT NULL DEFAULT 0
 );
 
 CREATE TABLE Products (
