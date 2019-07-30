@@ -16,5 +16,7 @@ require_once("inc/RestAPI/OrderDetailsDAO.class.php");
 require_once("inc/RestAPI/RestClient.class.php");
 require_once("inc/Admin/Page.class.php");
 require_once("inc/Admin/ProductController.class.php");
+require_once("inc/Admin/CustomerController.class.php");
+require_once("inc/Admin/OrderController.class.php");
 
 ?>

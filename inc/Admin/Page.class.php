@@ -28,6 +28,11 @@ class AdminPage {
         include_once('views/product-details.view.php');
     }
 
+    public static function pageNotFound(){ ?>
+        <h1>404</h1>
+        <p><strong>Page not found</strong></p>
+    <?php }
+
     public static function redirectToList($controllerName){ ?>
         <!doctype html>
         <html lang="en">

@@ -23,10 +23,21 @@ switch($controller){
         }
     break;
     case "order":
+        if(!empty($_POST)) {
+            OrderController::postActionResult($_POST);
+        } else {
+            OrderController::getActionResult($action, $sortBy, $data);
+        }
     break;
     case "user":
+        if(!empty($_POST)) {
+            CustomerController::postActionResult($_POST);
+        } else {
+            CustomerController::getActionResult($action, $sortBy, $data);
+        }
     break;
     default:
+        AdminPage::pageNotFound();
     break;
 }
 
