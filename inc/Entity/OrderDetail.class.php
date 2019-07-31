@@ -14,6 +14,8 @@ class OrderDetail {
     private $productId;
     private $quantity;
 
+    private $product;
+
     // Getter
     public function getOrderId() : int {
         return $this->orderId;
@@ -25,6 +27,10 @@ class OrderDetail {
 
     public function getQuantity() : int {
         return $this->quantity;
+    }
+
+    public function getProduct() : Product {
+        return $this->product;
     }
 
     // Setter
@@ -40,6 +46,10 @@ class OrderDetail {
         $this->quantity = $value;
     }
 
+    public function setProduct(Product $product) {
+        $this->product = $product;
+    }
+
     public function serialize() : stdClass {
         $obj = new stdClass;
 
@@ -47,6 +57,10 @@ class OrderDetail {
         $obj->orderId = $this->orderId;
         $obj->productId = $this->productId;
         $obj->quantity = $this->quantity;
+
+        if (isset($this->product)) {
+            $obj->product = $this->product->serialize();
+        }
 
         return $obj;
     }

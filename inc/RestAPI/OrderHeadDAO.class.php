@@ -1,6 +1,7 @@
 <?php
 
 class OrderHeadDAO {
+
     private static $db;
 
     public static function initialize() {
