@@ -4,13 +4,13 @@ class UserDAO {
 
     private static $db;
 
-    static function initialize() {
+    public static function initialize() {
         //Initialize the database connection
         self::$db = new PDOAgent('User');
     }
 
     //READ a single User
-    static function getUser(int $id): ?User {
+    public static function getUser(int $id): ?User {
 
         $sql = 'SELECT * FROM Users WHERE id = :id';
 
@@ -29,7 +29,7 @@ class UserDAO {
     }
 
     //READ a list of Users
-    static function getUsers(array $ids = null): array {
+    public static function getUsers(array $ids = null): array {
 
         $sql = 'SELECT * FROM Users';
         if (!empty($ids)) {
@@ -47,7 +47,7 @@ class UserDAO {
     }
 
     //READ a single User by email
-    static function getUserByEmail(string $email): ?User {
+    public static function getUserByEmail(string $email): ?User {
 
         $sql = 'SELECT * FROM Users WHERE email = :email';
 
@@ -66,7 +66,7 @@ class UserDAO {
     }
 
     //Create a User
-    static function createUser(User $user): int {
+    public static function createUser(User $user): int {
 
         $sql = 'INSERT INTO Users (name, email, password) VALUES (:name, :email, :password)';
 
@@ -86,7 +86,7 @@ class UserDAO {
     }
 
     //Update a User
-    static function updateUser(User $user): bool {
+    public static function updateUser(User $user): bool {
 
         $sql = 'UPDATE Users SET name = :name, email = :email WHERE id = :id';
 
@@ -106,7 +106,7 @@ class UserDAO {
     }
 
     //Update password
-    static function updatePassword(User $user): bool {
+    public static function updatePassword(User $user): bool {
 
         $sql = 'UPDATE Users SET password = :password WHERE id = :id';
 
@@ -125,7 +125,7 @@ class UserDAO {
     }
 
     //Update shopping cart
-    static function updateShoppingCart(User $user): bool {
+    public static function updateShoppingCart(User $user): bool {
 
         $sql = 'UPDATE Users SET shoppingCart = :shoppingCart WHERE id = :id';
 

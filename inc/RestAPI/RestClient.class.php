@@ -3,7 +3,7 @@
 // https://stackoverflow.com/questions/6213509/send-json-post-using-php
 
 class RestClient {
-    static function call($method, $url, $json = null) {
+    public static function call($method, $url, $json = null) {
         $options = array(
             'http' => array(
                 'method' => $method,

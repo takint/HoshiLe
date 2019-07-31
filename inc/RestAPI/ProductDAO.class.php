@@ -4,13 +4,13 @@ class ProductDAO {
 
     private static $db;
 
-    static function initialize() {
+    public static function initialize() {
         //Initialize the database connection
         self::$db = new PDOAgent('Product');
     }
 
     //READ a single Product
-    static function getProduct(int $id): ?Product {
+    public static function getProduct(int $id): ?Product {
 
         $sql = 'SELECT * FROM Products WHERE id = :id';
 
@@ -29,7 +29,7 @@ class ProductDAO {
     }
 
     //READ a list of Products
-    static function getProducts(array $ids = null): array {
+    public static function getProducts(array $ids = null): array {
 
         $sql = 'SELECT * FROM Products';
         if (!empty($ids)) {
@@ -46,7 +46,7 @@ class ProductDAO {
         return self::$db->getResultSet();
     }
 
-    static function createProduct(Product $newProduct): int{
+    public static function createProduct(Product $newProduct): int{
         // INSERT statement for Product
         $sqlInsert = "INSERT INTO Products (name, brand, price, imageUrl) VALUES (:name, :brand, :price, :imageUrl);";
 
@@ -64,7 +64,7 @@ class ProductDAO {
         return self::$db->lastInsertedId();
     }
 
-    static function updateProduct(Product $updateProduct) : int {
+    public static function updateProduct(Product $updateProduct) : int {
         try{
             // UPDATE statement for Product
             $sqlUpdate = "UPDATE Products SET name = :name, brand = :brand, price = :price, imageUrl = :imageUrl WHERE id = :id;";
@@ -98,7 +98,7 @@ class ProductDAO {
         return $count;
     }
 
-    static function deleteProduct(int $productId) : bool {
+    public static function deleteProduct(int $productId) : bool {
         try {
             // DELETE statement for Product
             $sqlDelete = "DELETE FROM Products WHERE id = :id;";

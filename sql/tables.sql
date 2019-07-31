@@ -27,9 +27,8 @@ CREATE TABLE OrderHeads (
 );
 
 CREATE TABLE OrderDetails (
+    id INT AUTO_INCREMENT PRIMARY KEY,
     orderId INT NOT NULL REFERENCES OrderHead (id),
-    detailId INT NOT NULL,
     productId INT NOT NULL REFERENCES Product (id),
-    quantity INT NOT NULL,
-    PRIMARY KEY (orderId, detailId)
+    quantity INT NOT NULL
 );
