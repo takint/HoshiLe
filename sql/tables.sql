@@ -22,13 +22,16 @@ CREATE TABLE Products (
 
 CREATE TABLE OrderHeads (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    userId INT NOT NULL REFERENCES User (id),
-    createDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+    userId INT NOT NULL,
+    createDate DATETIME NOT NULL,
+    FOREIGN KEY (userId) REFERENCES Users (id)
 );
 
 CREATE TABLE OrderDetails (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    orderId INT NOT NULL REFERENCES OrderHead (id),
-    productId INT NOT NULL REFERENCES Product (id),
-    quantity INT NOT NULL
+    orderId INT NOT NULL,
+    productId INT NOT NULL,
+    quantity INT NOT NULL,
+    FOREIGN KEY (orderId) REFERENCES OrderHeads (id),
+    FOREIGN KEY (productId) REFERENCES Products (id)
 );

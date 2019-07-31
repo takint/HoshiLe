@@ -45,7 +45,7 @@ class OrderHeadDAO {
 
     public static function createOrderHead(OrderHead $newOrder): int {
         // INSERT statement for OrderHeads
-        $sqlInsert = "INSERT INTO OrderHeads (userId) VALUES (:userId);";
+        $sqlInsert = "INSERT INTO OrderHeads (userId, createDate) VALUES (:userId, NOW());";
 
         // Prepare the query
         self::$db->query($sqlInsert);
