@@ -51,12 +51,20 @@ switch ($_SERVER['REQUEST_METHOD']) {
         break;
 
     case 'POST':
-        if (!empty($requestData)) {
-            $np = OrderHead::deserialize($requestData);
-            $result = OrderHeadDAO::createOrderHead($np);
+        if (isset($requestData->userId) && !empty($requestData->details)) {
+            $orderHead = new OrderHead();
+            $orderHead->setUserId($requestData->userId);
+            $orderId = OrderHeadDAO::createOrderHead($orderHead);
+            foreach ($requestData->details as $detail) {
+                $orderDetail = new OrderDetail();
+                $orderDetail->setOrderId($orderId);
+                $orderDetail->setProductId($detail->productId);
+                $orderDetail->setQuantity($detail->quantity);
+                OrderDetailDAO::createOrderDetail($orderDetail);
+            }
 
             header('Content-Type: application/json');
-            echo json_encode($result);
+            echo json_encode($orderId);
         }
         break;
 
