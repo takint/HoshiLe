@@ -3,13 +3,13 @@
 class OrderHeadDAO {
     private static $db;
 
-    static function initialize() {
+    public static function initialize() {
         //Initialize the database connection
         self::$db = new PDOAgent('OrderHead');
     }
 
     //READ a single Order Head
-    static function getOrderHead(int $id): ?Product {
+    public static function getOrderHead(int $id): ?OrderHead {
 
         $sql = 'SELECT * FROM OrderHeads WHERE id = :id';
 
@@ -28,12 +28,9 @@ class OrderHeadDAO {
     }
 
     //READ a list of OrderHeads
-    static function getOrderHeads(array $ids = null): array {
+    public static function getOrderHeads(): array {
 
         $sql = 'SELECT * FROM OrderHeads';
-        if (!empty($ids)) {
-            $sql .= ' WHERE id in (' . implode(', ', $ids) . ')';
-        }
 
         // Query
         self::$db->query($sql);
@@ -45,7 +42,7 @@ class OrderHeadDAO {
         return self::$db->getResultSet();
     }
 
-    static function createOrderHead(OrderHead $newOrder): int{
+    public static function createOrderHead(OrderHead $newOrder): int{
         // INSERT statement for OrderHeads
         $sqlInsert = "INSERT INTO OrderHeads (userId, createDate) VALUES (:userId, :createDate);";
 
@@ -61,7 +58,7 @@ class OrderHeadDAO {
         return self::$db->lastInsertedId();
     }
 
-    static function updateOrderHead(OrderHead $updateOrder) : int {
+    public static function updateOrderHead(OrderHead $updateOrder) : int {
         try{
             // UPDATE statement for Order Head
             $sqlUpdate = "UPDATE OrderHeads SET userId = :userId, createDate = :createDate WHERE id = :id;";
@@ -93,7 +90,7 @@ class OrderHeadDAO {
         return $count;
     }
 
-    static function deleteOrderHead(int $orderId) : bool {
+    public static function deleteOrderHead(int $orderId) : bool {
         try {
             // DELETE statement for Order Head
             $sqlDelete = "DELETE FROM OrderHeads WHERE id = :id;";
@@ -101,7 +98,7 @@ class OrderHeadDAO {
             // Prepare the query
             self::$db->query($sqlDelete);
 
-            self::$db->bind(':id', $productId);
+            self::$db->bind(':id', $orderId);
 
             // Execute the query
             self::$db->execute();

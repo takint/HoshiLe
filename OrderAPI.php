@@ -2,12 +2,12 @@
 
 require_once('inc/config.inc.php');
 require_once('inc/Entity/BaseEntity.class.php');
-require_once('inc/Entity/Product.class.php');
+require_once('inc/Entity/OrderHead.class.php');
 require_once('inc/RestAPI/PDOAgent.class.php');
-require_once('inc/RestAPI/ProductDAO.class.php');
+require_once('inc/RestAPI/OrderHeadDAO.class.php');
 
-//Instantiate a new Product Mapper
-OrderDAO::initialize();
+//Instantiate a new Order Mappers
+OrderHeadDAO::initialize();
 
 //Pull the request data
 $requestData = json_decode(file_get_contents('php://input'));
@@ -15,55 +15,36 @@ $requestData = json_decode(file_get_contents('php://input'));
 //Do something based on the request
 switch ($_SERVER['REQUEST_METHOD']) {
 
-    //If there was a request with an id return that product, if not return all of them!
+    //If there was a request with an id return that order, if not return all of them!
     case 'GET':
         if (isset($requestData->id)) {
-            $product = ProductDAO::getProduct($requestData->id);
-            $stdProduct = is_null($product) ? null : $product->serialize();
+            $order = OrderHeadDAO::getOrderHead($requestData->id);
+            $stdOrder = is_null($order) ? null : $order->serialize();
 
             header('Content-Type: application/json');
-            echo json_encode($stdProduct);
+            echo json_encode($stdOrder);
         } else {
-            if (isset($requestData->ids)) {
-                $products = ProductDAO::getProducts(array_filter($requestData->ids, 'is_int'));
-            } else {
-                $products = ProductDAO::getProducts();
-            }
-            $stdProducts = array();
-            foreach ($products as $product) {
-                $stdProducts[] = $product->serialize();
+            $orders = OrderHeadDAO::getOrderHeads();
+            $stdOrders = array();
+            foreach ($orders as $order) {
+                $stdOrders[] = $order->serialize();
             }
 
             header('Content-Type: application/json');
-            echo json_encode($stdProducts);
+            echo json_encode($stdOrders);
         }
-    break;
-    case 'POST': 
-        if(!empty($requestData)){
-            $np = Product::deserialize($requestData);
-            $result = ProductDAO::createProduct($np);
+        break;
+
+    case 'POST':
+        if (!empty($requestData)) {
+            $np = OrderHead::deserialize($requestData);
+            $result = OrderHeadDAO::createOrderHead($np);
 
             header('Content-Type: application/json');
             echo json_encode($result);
         }
-    break;
-    case 'PUT': 
-        if(!empty($requestData)){
-            $np = Product::deserialize($requestData);
-            $result = ProductDAO::updateProduct($np);
+        break;
 
-            header('Content-Type: application/json');
-            echo json_encode($result);
-        }
-    break;
-    case 'DELETE': 
-        if (isset($requestData->id)) {
-            $result = ProductDAO::deleteProduct($requestData->id);
-
-            header('Content-Type: application/json');
-            echo json_encode($result);
-        }
-    break;
     default:
         echo json_encode(array('message' => 'Você fala HTTP?'));
         break;
