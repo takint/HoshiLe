@@ -32,6 +32,20 @@ class OrderHead extends BaseEntity {
         return $this->details;
     }
 
+    public function getTotalItems() : int {
+        return count($this->details);
+    }
+
+    public function getTotal() : float {
+        $total = 0;
+        foreach($this->details as $key => $detail){
+            $prodPrice = is_null($detail->getProduct()) ? 0 : $detail->getProduct()->getPrice();
+            $total += $prodPrice * $detail->getQuantity();
+        }
+
+        return $total;
+    }
+
     // Setter
     public function setUserId(string $value) {
         $this->userId = $value;
@@ -64,6 +78,25 @@ class OrderHead extends BaseEntity {
         }
 
         return $obj;
+    }
+
+    public static function deserialize(stdClass $obj) : OrderHead {
+        $order = new OrderHead();
+
+        $order->setId($obj->id);
+        $order->setUserId($obj->userId);
+        $order->setCreateDate($obj->createDate);
+
+        if (isset($obj->user)) {
+            $order->setUser(User::deserialize($obj->user));
+        }
+
+        if (isset($obj->details)) {
+            $orderDetails = array_map(function($detail) { return OrderDetail::deserialize($detail); }, $obj->details);
+            $order->setDetails($orderDetails);
+        }
+        
+        return $order;
     }
 }
 

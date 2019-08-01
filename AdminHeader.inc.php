@@ -8,15 +8,11 @@ require_once("inc/Entity/User.class.php");
 require_once("inc/Entity/Product.class.php");
 require_once("inc/Entity/OrderHead.class.php");
 require_once("inc/Entity/OrderDetail.class.php");
-require_once("inc/RestAPI/PDOAgent.class.php");
-require_once("inc/RestAPI/UserDAO.class.php");
-require_once("inc/RestAPI/ProductDAO.class.php");
-require_once("inc/RestAPI/OrderHeadDAO.class.php");
-require_once("inc/RestAPI/OrderDetailDAO.class.php");
 require_once("inc/RestAPI/RestClient.class.php");
 require_once("inc/Admin/Page.class.php");
 require_once("inc/Admin/ProductController.class.php");
 require_once("inc/Admin/CustomerController.class.php");
 require_once("inc/Admin/OrderController.class.php");
+require_once("inc/Admin/DashboardController.class.php");
 
 ?>

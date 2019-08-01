@@ -11,23 +11,16 @@ class CustomerController {
                 $cust = User::deserialize($jcustomer);
                 AdminPage::customerDetails($cust, "view");
             break;
-            case "add":
-                $nc = new User();
-                AdminPage::customerDetails($nc, "add");
-            break;
             case "edit":
                 $jcustomer = RestClient::call("GET", USER_API, array("id" => $data));
                 $cust = User::deserialize($jcustomer);
                 AdminPage::customerDetails($cust, "edit");
             break;
+            // For customer management we avoid to add new or delete from admin page
             case "delete":
-                $isDeleted = RestClient::call("DELETE", USER_API, array("id" => $data));
-                if($isDeleted){
-                   self::displayList($sortBy);
-                }
-            break;
+            case "add":
             default:
-                self::displayList($sortBy);
+                self::displayList();
             break;
         }
     }
@@ -45,13 +38,11 @@ class CustomerController {
 
             AdminPage::redirectToList("customer");
         } else {
-            $np = new User();
-            // $np->setId($postData['id']);
-            // $np->setName($postData['name']);
-            // $np->setBrand($postData['brand']);
-            // $np->setPrice($postData['price']);
-            // $np->setImageUrl($postData['imageUrl']);
-            // AdminPage::customerDetails($np, "edit", $validation);
+            $nc = new User();
+            $nc->setId($postData['id']);
+            $nc->setName($postData['name']);
+            $nc->setBrand($postData['email']);
+            AdminPage::customerDetails($np, "edit", $validation);
         }
     }
 
@@ -59,13 +50,7 @@ class CustomerController {
         $errors = array();
 
         if(empty($fromData['name'])) {
-            $errors[] = "Please enter product name";
-        }
-        if(empty($fromData['brand'])) {
-            $errors[] = "Please enter product brand";
-        }
-        if(empty($fromData['price'])) {
-            $errors[] = "Please enter product price";
+            $errors[] = "Please correct user full name";
         }
 
         return $errors;
@@ -83,8 +68,7 @@ class CustomerController {
         if(self::$sortType != ""){
             switch(self::$sortType){   
                 case "name" : return $p1->getName() <=> $p2->getName();
-                case "brand": return $p1->getBrand() <=> $p2->getBrand();
-                case "price": return $p1->getPrice() <=> $p2->getPrice();
+                case "email": return $p1->getEmail() <=> $p2->getEmail();
                 default: return $p1->getId() <=> $p2->getId();
             }
         } else {

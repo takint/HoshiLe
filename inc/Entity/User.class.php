@@ -21,15 +21,15 @@ class User extends BaseEntity {
 
     // Getter
     public function getName() : string {
-        return $this->name;
+        return $this->name?? "";
     }
 
     public function getEmail() : string{
-        return $this->email;
+        return $this->email?? "";
     }
 
     public function getPassword() : string{
-        return $this->password;
+        return $this->password?? "";
     }
 
     public function getShoppingCart() : ?string{
@@ -37,7 +37,7 @@ class User extends BaseEntity {
     }
 
     public function getIsAdmin() : bool{
-        return $this->isAdmin;
+        return $this->isAdmin?? false;
     }
 
     // Setter

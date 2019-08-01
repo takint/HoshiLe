@@ -36,6 +36,9 @@ switch($controller){
             CustomerController::getActionResult($action, $sortBy, $data);
         }
     break;
+    case "dashboard":
+        DashboardController::getActionResult($action, $sortBy, $data);
+    break;
     default:
         AdminPage::pageNotFound();
     break;

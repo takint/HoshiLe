@@ -30,3 +30,30 @@ insert into Users(name, email, password, shoppingCart, isAdmin) values ('Josiah 
 insert into Users(name, email, password, shoppingCart, isAdmin) values ('Ailey Meader', 'ameader2@constantcontact.com', '$2y$10$KwQ93uY6Iqiq9vjYlVDrf.I4hkRUQHg9m3ig9o1NkM8r8izK/xkDe', '', 0);
 insert into Users(name, email, password, shoppingCart, isAdmin) values ('Halimeda Varcoe', 'hvarcoe3@amazon.com', '$2y$10$KwQ93uY6Iqiq9vjYlVDrf.I4hkRUQHg9m3ig9o1NkM8r8izK/xkDe', '', 0);
 insert into Users(name, email, password, shoppingCart, isAdmin) values ('Normand Skypp', 'nskypp4@wsj.com', '$2y$10$KwQ93uY6Iqiq9vjYlVDrf.I4hkRUQHg9m3ig9o1NkM8r8izK/xkDe', '', 0);
+
+-- Insert test data for Order head and Order details
+insert into OrderHeads(userId, createDate) values (2, now());
+insert into OrderHeads(userId, createDate) values (3, now());
+insert into OrderHeads(userId, createDate) values (4, now());
+insert into OrderHeads(userId, createDate) values (5, now());
+insert into OrderHeads(userId, createDate) values (6, now());
+-- Order details
+-- Head 1
+insert into OrderDetails(orderId, productId, quantity ) values (1, 2, 2);
+insert into OrderDetails(orderId, productId, quantity ) values (1, 5, 1);
+insert into OrderDetails(orderId, productId, quantity ) values (1, 1, 1);
+-- Head 2
+insert into OrderDetails(orderId, productId, quantity ) values (2, 15, 2);
+insert into OrderDetails(orderId, productId, quantity ) values (2, 20, 1);
+-- Head 3
+insert into OrderDetails(orderId, productId, quantity ) values (3, 8, 1);
+-- Head 4
+insert into OrderDetails(orderId, productId, quantity ) values (3, 12, 2);
+insert into OrderDetails(orderId, productId, quantity ) values (3, 2, 1);
+insert into OrderDetails(orderId, productId, quantity ) values (3, 1, 2);
+insert into OrderDetails(orderId, productId, quantity ) values (3, 18, 1);
+-- Head 5
+insert into OrderDetails(orderId, productId, quantity ) values (4, 1, 1);
+
+-- Head 6
+insert into OrderDetails(orderId, productId, quantity ) values (5, 11, 11);

@@ -34,9 +34,10 @@
             </tr>
         <?php } ?>
         <tr>
-            <td colspan="6">
+            <td colspan="5">
                 Paging will come in the next version
             </td>
+            <td><?= "Total items: ".count($lstProducts)?></td>
         </tr>
         </tbody>
     </table>

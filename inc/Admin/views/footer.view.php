@@ -3,6 +3,7 @@
                     <br>
                     <p class="float-right"><a href="#">Back to top</a></p>
                     <p> &copy; 2019 HoshiLe Group · Admin page version 0.0.1</p>
+                    <p>CSIS 3280 Project by Takanori Hoshi (300306402) and Ngoc Tin Le (300296440)</p>
                 </footer>
             </main>
         </div>

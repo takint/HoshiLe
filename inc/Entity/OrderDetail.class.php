@@ -9,7 +9,7 @@
 // | quantity  | int(11) | NO   |     | NULL    |                |
 // +-----------+---------+------+-----+---------+----------------+
 
-class OrderDetail {
+class OrderDetail extends BaseEntity {
     private $orderId;
     private $productId;
     private $quantity;
@@ -46,7 +46,7 @@ class OrderDetail {
         $this->quantity = $value;
     }
 
-    public function setProduct(Product $product) {
+    public function setProduct(?Product $product) {
         $this->product = $product;
     }
 
@@ -63,6 +63,22 @@ class OrderDetail {
         }
 
         return $obj;
+    }
+
+    public static function deserialize(stdClass $obj) : OrderDetail {
+        $details = new OrderDetail();
+
+        $details->setId($obj->id);
+        $details->setOrderId($obj->orderId);
+        $details->setProductId($obj->productId);
+        $details->setQuantity($obj->quantity);
+
+        if (isset($obj->product)) {
+            $prod = Product::deserialize($obj->product);
+            $details->setProduct($prod);
+        }
+
+        return $details;
     }
 }
 
