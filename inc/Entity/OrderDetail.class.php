@@ -29,7 +29,7 @@ class OrderDetail extends BaseEntity {
         return $this->quantity;
     }
 
-    public function getProduct() : Product {
+    public function getProduct() : ?Product {
         return $this->product;
     }
 

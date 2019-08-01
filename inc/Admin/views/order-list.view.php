@@ -20,26 +20,30 @@
         </tr>
         </thead>
         <tbody>
-        <?php foreach($lstOrders as $order) { ?>
-            <tr>
-                <td><?= $order->getId()?></td>
-                <td><?= $order->getUser()->getName()?></td>
-                <td><?= $order->getCreateDate()?></td>
-                <td><?= $order->getTotalItems()?></td>
-                <td><?= "$".$order->getTotal()?></td>
-                <td>
-                    <a href="?controller=order&action=edit&id=<?= $order->getId()?>" class="btn btn-sm btn-primary">Edit</a>
-                    <a href="?controller=order&action=delete&id=<?= $order->getId()?>" class="btn btn-sm btn-danger">Delete</a>
-                </td>
-            </tr>
+        <?php 
+            $totalRev = 0;
+            foreach($lstOrders as $order) { 
+                $totalBill = $order->getTotal();
+                $totalRev += $totalBill;
+        ?>
+                <tr>
+                    <td><?= $order->getId()?></td>
+                    <td><?= $order->getUser()->getName()?></td>
+                    <td><?= $order->getCreateDate()?></td>
+                    <td><?= $order->getTotalItems()?></td>
+                    <td><?= "$".$totalBill?></td>
+                    <td>
+                        <a href="?controller=order&action=edit&id=<?= $order->getId()?>" class="btn btn-sm btn-primary">Edit</a>
+                    </td>
+                </tr>
         <?php } ?>
         <tr>
             <td></td>
             <td></td>
             <td></td>
-            <td></td>
+            <td>Total revenue</td>
             <td colspan="2">
-                Total revenue
+                <?= "$".$totalRev?>
             </td>
         </tr>
         <tr>

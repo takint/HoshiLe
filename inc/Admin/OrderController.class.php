@@ -7,25 +7,20 @@ class OrderController {
         self::$sortType = $sortBy;
         switch($action){
             case "view": 
-                $jproduct = RestClient::call("GET", ORDER_API, array("id" => $data));
-                $prod = Product::deserialize($jproduct);
-                AdminPage::productDetails($prod, "view");
+                $jorder = RestClient::call("GET", ORDER_API, array("id" => $data));
+                $order = OrderHead::deserialize($jorder);
+                AdminPage::orderDetails($prod, "view");
             break;
             case "add":
-                $np = new Product();
-                AdminPage::productDetails($np, "add");
+                $no = new OrderHead();
+                AdminPage::orderDetails($no, "add");
             break;
             case "edit":
-                $jproduct = RestClient::call("GET", ORDER_API, array("id" =>$data));
-                $prod = Product::deserialize($jproduct);
-                AdminPage::productDetails($prod, "edit");
+                $jorder = RestClient::call("GET", ORDER_API, array("id" =>$data));
+                $no = OrderHead::deserialize($jorder);
+                AdminPage::orderDetails($no, "edit");
             break;
             case "delete":
-                $isDeleted = RestClient::call("DELETE", ORDER_API, array("id" =>$data));
-                if($isDeleted){
-                   self::displayList();
-                }
-            break;
             default:
                 self::displayList();
             break;
@@ -45,13 +40,13 @@ class OrderController {
 
             AdminPage::redirectToList("order");
         } else {
-            $np = new OrderHead();
-            $np->setId($postData['id']);
-            $np->setName($postData['name']);
-            $np->setBrand($postData['brand']);
-            $np->setPrice($postData['price']);
-            $np->setImageUrl($postData['imageUrl']);
-            AdminPage::productDetails($np, "edit", $validation);
+            $no = new OrderHead();
+            // $np->setId($postData['id']);
+            // $np->setName($postData['name']);
+            // $np->setBrand($postData['brand']);
+            // $np->setPrice($postData['price']);
+            // $np->setImageUrl($postData['imageUrl']);
+            AdminPage::orderDetails($no, "edit", $validation);
         }
     }
 
@@ -59,13 +54,13 @@ class OrderController {
         $errors = array();
 
         if(empty($fromData['name'])) {
-            $errors[] = "Please enter product name";
+            $errors[] = "Please enter order name";
         }
         if(empty($fromData['brand'])) {
-            $errors[] = "Please enter product brand";
+            $errors[] = "Please enter order brand";
         }
         if(empty($fromData['price'])) {
-            $errors[] = "Please enter product price";
+            $errors[] = "Please enter order price";
         }
 
         return $errors;
