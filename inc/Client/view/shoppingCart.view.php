@@ -59,7 +59,7 @@
             <input type="hidden" name="page" value="login">
             <input type="hidden" name="forPurchase" value="true">
           <?php } else { ?>
-            <input type="hidden" name="action" value="updateQuantity">
+            <input type="hidden" name="action" value="purchase">
           <?php } ?>
           <button class="btn btn-lg btn-primary w-25" type="submit" <?php if (empty($shoppingCart)) echo 'disabled' ?>>
             <?php echo is_null(Session::$userId) ? 'Please Log in' : 'Purchase'; ?>
