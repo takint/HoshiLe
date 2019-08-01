@@ -78,6 +78,9 @@ class OrderController {
         if(self::$sortType != ""){
             switch(self::$sortType){   
                 case "createDate" : return $o1->getCreateDate() <=> $o2->getCreateDate();
+                case "custName" : return $o1->getUser()->getName() <=> $o2->getUser()->getName();
+                case "totalItem" : return $o1->getTotalItems() <=> $o2->getTotalItems();
+                case "totalBill" : return $o1->getTotal() <=> $o2->getTotal();
                 default: return $o1->getId() <=> $o2->getId();
             }
         } else {

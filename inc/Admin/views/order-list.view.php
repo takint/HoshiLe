@@ -12,10 +12,10 @@
         <thead>
         <tr>
             <th><a href="?controller=order&sort=id">Order Id</a></th>
-            <th><a href="?controller=order&sort=id">Customer Name</a></th>
-            <th><a href="?controller=order&sort=id">Ordered Date</a></th>
-            <th><a href="?controller=order&sort=id">Total Item</a></th>
-            <th><a href="?controller=order&sort=id">Total</a></th>
+            <th><a href="?controller=order&sort=custName">Customer Name</a></th>
+            <th><a href="?controller=order&sort=createDate">Ordered Date</a></th>
+            <th><a href="?controller=order&sort=totalItem">Total Item</a></th>
+            <th><a href="?controller=order&sort=totalBill">Total</a></th>
             <th>Action</th>
         </tr>
         </thead>
