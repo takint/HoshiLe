@@ -6,6 +6,8 @@ require_once 'inc/Client/Session.class.php';
 require_once 'inc/Entity/BaseEntity.class.php';
 require_once 'inc/Entity/Product.class.php';
 require_once 'inc/Entity/User.class.php';
+require_once 'inc/Entity/OrderHead.class.php';
+require_once 'inc/Entity/OrderDetail.class.php';
 require_once 'inc/RestAPI/RestClient.class.php';
 
 Session::initialize();
@@ -115,6 +117,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header('Location: ' . $_SERVER['PHP_SELF'] . '?page=shoppingCart');
         exit;
     }
+    if ($_POST['action'] == 'purchase' && !is_null(Session::$userId) && !empty(Session::$shoppingCart)) {
+        $params = array(
+            'userId' => Session::$userId,
+            'details' => Session::$shoppingCart
+        );
+        $result = RestClient::call('POST', ORDER_API, $params);
+        if ($result) {
+            Session::clearShoppingCart();
+            header('Location: ' . $_SERVER['PHP_SELF'] . '?orderId=' . $result);
+            exit;
+        } else {
+            $errors[] = 'Sorry, failed to purchase.';
+        }
+    }
     if (empty($errors)) {
         $errors[] = 'Sorry, something goes wrong.';
     }
@@ -146,6 +162,14 @@ if (!empty($errors)) {
         $products = array();
     }
     ClientPage::shoppingCart(Session::getShoppingCart($products));
+} else if (isset($_GET['orderId'])) {
+    $result = RestClient::call('GET', ORDER_API, array('id' => $_GET['orderId']));
+    if ($result) {
+        $order = OrderHead::deserialize($result);
+        ClientPage::orderDetail($order);
+    } else {
+        ClientPage::showErrors(array('Sorry, order not found.'));
+    }
 } else if (isset($_GET['productId'])) {
     $result = RestClient::call('GET', PRODUCT_API, array('id' => $_GET['productId']));
     if ($result) {

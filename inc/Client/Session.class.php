@@ -89,6 +89,11 @@ class Session {
         self::updateShoppingCart();
     }
 
+    public static function clearShoppingCart() {
+        self::$shoppingCart = array();
+        self::updateShoppingCart();
+    }
+
     private static function incrementProduct(int $productId, int $incr) {
         $found = false;
         foreach (self::$shoppingCart as $tuple) {

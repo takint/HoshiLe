@@ -17,26 +17,28 @@
           <?php
           $totalPrice = 0;
           foreach ($shoppingCart as $tuple) {
-            $unitPrice = $tuple->product->getPrice();
-            $price = $tuple->quantity * $unitPrice;
+            $product = $tuple->product;
+            $quantity = $tuple->quantity;
+            $unitPrice = $product->getPrice();
+            $price = $quantity * $unitPrice;
             $totalPrice += $price;
           ?>
             <tr>
-              <td class="w-25"><img class="img-fluid w-75" src="<?php echo $tuple->product->getImageUrl(); ?>" alt=""></td>
-              <td><?php echo htmlspecialchars($tuple->product->getBrand()); ?></td>
-              <td><?php echo htmlspecialchars($tuple->product->getName()); ?></td>
+              <td class="w-25"><img class="img-fluid w-75" src="<?php echo $product->getImageUrl(); ?>" alt=""></td>
+              <td><?php echo htmlspecialchars($product->getBrand()); ?></td>
+              <td><?php echo htmlspecialchars($product->getName()); ?></td>
               <td>
                 <form class="d-inline" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
                   <input type="hidden" name="action" value="updateQuantity">
-                  <input type="hidden" name="productId" value="<?php echo $tuple->product->getId(); ?>">
-                  <input type="hidden" name="quantity" value="<?php echo $tuple->quantity - 1; ?>">
+                  <input type="hidden" name="productId" value="<?php echo $product->getId(); ?>">
+                  <input type="hidden" name="quantity" value="<?php echo $quantity - 1; ?>">
                   <button class="btn btn-sm btn-light" type="submit">-</button>
                 </form>
-                <span class="mx-2"><?php echo $tuple->quantity; ?></span>
+                <span class="mx-2"><?php echo $quantity; ?></span>
                 <form class="d-inline" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
                   <input type="hidden" name="action" value="updateQuantity">
-                  <input type="hidden" name="productId" value="<?php echo $tuple->product->getId(); ?>">
-                  <input type="hidden" name="quantity" value="<?php echo $tuple->quantity + 1; ?>">
+                  <input type="hidden" name="productId" value="<?php echo $product->getId(); ?>">
+                  <input type="hidden" name="quantity" value="<?php echo $quantity + 1; ?>">
                   <button class="btn btn-sm btn-light" type="submit">+</button>
                 </form>
               </td>
@@ -59,7 +61,7 @@
             <input type="hidden" name="page" value="login">
             <input type="hidden" name="forPurchase" value="true">
           <?php } else { ?>
-            <input type="hidden" name="action" value="updateQuantity">
+            <input type="hidden" name="action" value="purchase">
           <?php } ?>
           <button class="btn btn-lg btn-primary w-25" type="submit" <?php if (empty($shoppingCart)) echo 'disabled' ?>>
             <?php echo is_null(Session::$userId) ? 'Please Log in' : 'Purchase'; ?>
