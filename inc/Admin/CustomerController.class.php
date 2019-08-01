@@ -20,7 +20,7 @@ class CustomerController {
             case "delete":
             case "add":
             default:
-                self::displayList($sortBy);
+                self::displayList();
             break;
         }
     }

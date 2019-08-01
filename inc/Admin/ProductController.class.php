@@ -23,11 +23,11 @@ class ProductController {
             case "delete":
                 $isDeleted = RestClient::call("DELETE", PRODUCT_API, array("id" =>$data));
                 if($isDeleted){
-                   self::displayList($sortBy);
+                   self::displayList();
                 }
             break;
             default:
-                self::displayList($sortBy);
+                self::displayList();
             break;
         }
     }
