@@ -24,7 +24,7 @@ class OrderHead extends BaseEntity {
         return $this->createDate;
     }
 
-    public function getUser() : User {
+    public function getUser() : ?User {
         return $this->user;
     }
 
