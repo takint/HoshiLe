@@ -3,6 +3,7 @@
 require_once 'inc/config.inc.php';
 require_once 'inc/Client/Page.class.php';
 require_once 'inc/Client/Session.class.php';
+require_once 'inc/Client/ShoppingCart.class.php';
 require_once 'inc/Entity/BaseEntity.class.php';
 require_once 'inc/Entity/Product.class.php';
 require_once 'inc/Entity/User.class.php';
@@ -11,6 +12,7 @@ require_once 'inc/Entity/OrderDetail.class.php';
 require_once 'inc/RestAPI/RestClient.class.php';
 
 Session::initialize();
+ShoppingCart::initialize();
 
 $errors = array();
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -23,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($result) {
             $user = User::deserialize($result);
             Session::setUser($user->getId(), $user->getName());
-            Session::mergeShoppingCart(json_decode($user->getShoppingCart()));
+            ShoppingCart::mergeShoppingCart(json_decode($user->getShoppingCart()));
             if (isset($_POST['forPurchase']) && $_POST['forPurchase'] == 'true') {
                 header('Location: ' . $_SERVER['PHP_SELF'] . '?page=shoppingCart');
             } else {
@@ -49,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $result = RestClient::call('POST', USER_API, $params);
             if ($result) {
                 Session::setUser($result, $_POST['name']);
-                Session::mergeShoppingCart();
+                ShoppingCart::mergeShoppingCart();
                 if (isset($_POST['forPurchase']) && $_POST['forPurchase'] == 'true') {
                     header('Location: ' . $_SERVER['PHP_SELF'] . '?page=shoppingCart');
                 } else {
@@ -108,23 +110,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
     }
     if ($_POST['action'] == 'addToCart' && isset($_POST['productId'])) {
-        Session::addProduct($_POST['productId']);
+        ShoppingCart::addProduct($_POST['productId']);
         header('Location: ' . $_SERVER['PHP_SELF'] . '?page=shoppingCart');
         exit;
     }
     if ($_POST['action'] == 'updateQuantity' && isset($_POST['productId']) && isset($_POST['quantity'])) {
-        Session::updateQuantity($_POST['productId'], $_POST['quantity']);
+        ShoppingCart::updateQuantity($_POST['productId'], $_POST['quantity']);
         header('Location: ' . $_SERVER['PHP_SELF'] . '?page=shoppingCart');
         exit;
     }
-    if ($_POST['action'] == 'purchase' && !is_null(Session::$userId) && !empty(Session::$shoppingCart)) {
+    if ($_POST['action'] == 'purchase' && !is_null(Session::$userId) && !empty(ShoppingCart::$shoppingCart)) {
         $params = array(
             'userId' => Session::$userId,
-            'details' => Session::$shoppingCart
+            'details' => ShoppingCart::$shoppingCart
         );
         $result = RestClient::call('POST', ORDER_API, $params);
         if ($result) {
-            Session::clearShoppingCart();
+            ShoppingCart::clearShoppingCart();
             header('Location: ' . $_SERVER['PHP_SELF'] . '?orderId=' . $result);
             exit;
         } else {
@@ -154,14 +156,14 @@ if (!empty($errors)) {
         ClientPage::showErrors(array('Sorry, user not found.'));
     }
 } else if (isset($_GET['page']) && $_GET['page'] == 'shoppingCart') {
-    $ids = array_map(function($tuple) { return $tuple->productId; }, Session::$shoppingCart);
+    $ids = array_map(function($tuple) { return $tuple->productId; }, ShoppingCart::$shoppingCart);
     if (!empty($ids)) {
         $result = RestClient::call('GET', PRODUCT_API, array('ids' => $ids));
         $products = array_map('Product::deserialize', $result);
     } else {
         $products = array();
     }
-    ClientPage::shoppingCart(Session::getShoppingCart($products));
+    ClientPage::shoppingCart(ShoppingCart::getShoppingCart($products));
 } else if (isset($_GET['page']) && $_GET['page'] == 'orderList') {
     $result = RestClient::call('GET', ORDER_API, array('userId' => Session::$userId));
     if ($result) {
