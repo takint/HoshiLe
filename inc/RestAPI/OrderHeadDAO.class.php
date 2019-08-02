@@ -29,12 +29,20 @@ class OrderHeadDAO {
     }
 
     //READ a list of OrderHeads
-    public static function getOrderHeads(): array {
+    public static function getOrderHeads(int $userId = null): array {
 
         $sql = 'SELECT * FROM OrderHeads';
+        if (!is_null($userId)) {
+            $sql .= ' WHERE userId = :userId';
+        }
 
         // Query
         self::$db->query($sql);
+
+        // Bind a parameter
+        if (!is_null($userId)) {
+            self::$db->bind(':userId', $userId);
+        }
 
         // Execute
         self::$db->execute();
