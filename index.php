@@ -1,7 +1,7 @@
 <?php
 
 require_once 'inc/config.inc.php';
-require_once 'inc/Client/Page.class.php';
+require_once 'inc/Client/ClientPage.class.php';
 require_once 'inc/Client/Session.class.php';
 require_once 'inc/Client/ShoppingCart.class.php';
 require_once 'inc/Entity/BaseEntity.class.php';
@@ -14,75 +14,44 @@ require_once 'inc/RestAPI/RestClient.class.php';
 Session::initialize();
 ShoppingCart::initialize();
 
-$errors = array();
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     switch ($_POST['action'] ?? '') {
         case 'login':
             $error = Session::login($_POST['email'] ?? '', $_POST['password'] ?? '');
-            if (is_null($error)) {
-                if (isset($_POST['forPurchase']) && $_POST['forPurchase'] == 'true') {
-                    header('Location: ' . $_SERVER['PHP_SELF'] . '?page=shoppingCart');
-                } else {
-                    header('Location: ' . $_SERVER['PHP_SELF']);
-                }
-                exit;
-            } else {
-                $errors[] = $error;
-            }
+            ClientPage::redirect($error, ($_POST['forPurchase'] ?? '') == 'true' ? 'shoppingCart' : '');
             break;
 
         case 'signup':
             $error = Session::signup($_POST['name'] ?? '', $_POST['email'] ?? '', $_POST['password1'] ?? '', $_POST['password2'] ?? '');
-            if (is_null($error)) {
-                if (isset($_POST['forPurchase']) && $_POST['forPurchase'] == 'true') {
-                    header('Location: ' . $_SERVER['PHP_SELF'] . '?page=shoppingCart');
-                } else {
-                    header('Location: ' . $_SERVER['PHP_SELF']);
-                }
-                exit;
-            } else {
-                $errors[] = $error;
-            }
+            ClientPage::redirect($error, ($_POST['forPurchase'] ?? '') == 'true' ? 'shoppingCart' : '');
             break;
 
         case 'updateProfile':
             $error = Session::updateProfile($_POST['name'] ?? '', $_POST['email'] ?? '');
-            if (is_null($error)) {
-                header('Location: ' . $_SERVER['PHP_SELF']);
-                exit;
-            } else {
-                $errors[] = $error;
-            }
+            ClientPage::redirect($error);
             break;
 
         case 'updatePassword':
             $error = Session::updatePassword($_POST['curPassword'] ?? '', $_POST['password1'] ?? '', $_POST['password2'] ?? '');
-            if (is_null($error)) {
-                header('Location: ' . $_SERVER['PHP_SELF']);
-                exit;
-            } else {
-                $errors[] = $error;
-            }
+            ClientPage::redirect($error);
             break;
 
         case 'logout':
             Session::logout();
-            header('Location: ' . $_SERVER['PHP_SELF']);
-            exit;
+            ClientPage::redirect();
+            break;
 
         case 'addToCart':
             if (isset($_POST['productId'])) {
                 ShoppingCart::addProduct($_POST['productId']);
-                header('Location: ' . $_SERVER['PHP_SELF'] . '?page=shoppingCart');
-                exit;
+                ClientPage::redirect(null, 'shoppingCart');
             }
             break;
 
         case 'updateQuantity':
             if (isset($_POST['productId']) && isset($_POST['quantity'])) {
                 ShoppingCart::updateQuantity($_POST['productId'], $_POST['quantity']);
-                header('Location: ' . $_SERVER['PHP_SELF'] . '?page=shoppingCart');
-                exit;
+                ClientPage::redirect(null, 'shoppingCart');
             }
             break;
 
@@ -92,20 +61,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 header('Location: ' . $_SERVER['PHP_SELF'] . '?orderId=' . $result);
                 exit;
             } else {
-                $errors[] = $result;
+                ClientPage::$errors[] = $result;
             }
             break;
     }
 
-    if (empty($errors)) {
-        $errors[] = 'Sorry, something goes wrong.';
+    if (empty(ClientPage::$errors)) {
+        ClientPage::$errors[] = 'Sorry, something goes wrong.';
     }
 }
 
 ClientPage::header();
 ClientPage::navigator();
-if (!empty($errors)) {
-    ClientPage::showErrors($errors);
+if (!empty(ClientPage::$errors)) {
+    ClientPage::showErrors();
 } else if (isset($_GET['page']) && $_GET['page'] == 'login') {
     ClientPage::userLogin(isset($_GET['forPurchase']) && $_GET['forPurchase'] == 'true');
 } else if (isset($_GET['page']) && $_GET['page'] == 'signup') {
@@ -117,7 +86,7 @@ if (!empty($errors)) {
         Session::setUser($user->getId(), $user->getName());
         ClientPage::userProfile($user);
     } else {
-        ClientPage::showErrors(array('Sorry, user not found.'));
+        ClientPage::showErrors('Sorry, user not found.');
     }
 } else if (isset($_GET['page']) && $_GET['page'] == 'shoppingCart') {
     $ids = array_map(function($tuple) { return $tuple->productId; }, ShoppingCart::$shoppingCart);
@@ -134,7 +103,7 @@ if (!empty($errors)) {
         $orders = array_map('OrderHead::deserialize', $result);
         ClientPage::orderList($orders);
     } else {
-        ClientPage::showErrors(array('Sorry, order not found.'));
+        ClientPage::showErrors('Sorry, order not found.');
     }
 } else if (isset($_GET['orderId'])) {
     $result = RestClient::call('GET', ORDER_API, array('id' => $_GET['orderId']));
@@ -142,7 +111,7 @@ if (!empty($errors)) {
         $order = OrderHead::deserialize($result);
         ClientPage::orderDetail($order);
     } else {
-        ClientPage::showErrors(array('Sorry, order not found.'));
+        ClientPage::showErrors('Sorry, order not found.');
     }
 } else if (isset($_GET['productId'])) {
     $result = RestClient::call('GET', PRODUCT_API, array('id' => $_GET['productId']));
@@ -150,7 +119,7 @@ if (!empty($errors)) {
         $product = Product::deserialize($result);
         ClientPage::productDetail($product);
     } else {
-        ClientPage::showErrors(array('Sorry, product not found.'));
+        ClientPage::showErrors('Sorry, product not found.');
     }
 } else {
     $result = RestClient::call('GET', PRODUCT_API);

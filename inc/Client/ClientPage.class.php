@@ -4,6 +4,8 @@ class ClientPage {
 
     public static $title = "HoshiLe’s Store";
 
+    public static $errors = array();
+
     public static function header() {
         include 'view/head.view.php';
     }
@@ -48,8 +50,20 @@ class ClientPage {
         include 'view/orderDetail.view.php';
     }
 
-    public static function showErrors(array $errors) {
+    public static function showErrors(string $error = null) {
+        if (!is_null($error)) {
+            self::$errors[] = $error;
+        }
         include 'view/showErrors.view.php';
+    }
+
+    public static function redirect(string $error = null, string $page = null) {
+        if (is_null($error)) {
+            header('Location: ' . $_SERVER['PHP_SELF'] . (is_null($page) ? '' : '?page=' . $page));
+            exit;
+        } else {
+            self::$errors[] = $error;
+        }
     }
 }
 
