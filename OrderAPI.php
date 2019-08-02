@@ -38,7 +38,11 @@ switch ($_SERVER['REQUEST_METHOD']) {
             header('Content-Type: application/json');
             echo json_encode($stdOrder);
         } else {
-            $orders = OrderHeadDAO::getOrderHeads();
+            if (isset($requestData->userId)) {
+                $orders = OrderHeadDAO::getOrderHeads($requestData->userId);
+            } else {
+                $orders = OrderHeadDAO::getOrderHeads();
+            }
             $stdOrders = array();
             foreach ($orders as $order) {
                 loadDetails($order);

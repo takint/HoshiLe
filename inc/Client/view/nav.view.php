@@ -30,6 +30,7 @@
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" href="<?php echo $_SERVER['PHP_SELF']; ?>?page=profile">Profile</a>
+              <a class="dropdown-item" href="<?php echo $_SERVER['PHP_SELF']; ?>?page=orderList">Order History</a>
               <div class="dropdown-divider"></div>
               <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
                 <input type="hidden" name="action" value="logout">

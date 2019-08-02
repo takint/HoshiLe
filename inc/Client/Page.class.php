@@ -40,6 +40,10 @@ class ClientPage {
         include 'view/shoppingCart.view.php';
     }
 
+    public static function orderList(array $orders) {
+        include 'view/orderList.view.php';
+    }
+
     public static function orderDetail(OrderHead $order) {
         include 'view/orderDetail.view.php';
     }

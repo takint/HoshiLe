@@ -162,6 +162,14 @@ if (!empty($errors)) {
         $products = array();
     }
     ClientPage::shoppingCart(Session::getShoppingCart($products));
+} else if (isset($_GET['page']) && $_GET['page'] == 'orderList') {
+    $result = RestClient::call('GET', ORDER_API, array('userId' => Session::$userId));
+    if ($result) {
+        $orders = array_map('OrderHead::deserialize', $result);
+        ClientPage::orderList($orders);
+    } else {
+        ClientPage::showErrors(array('Sorry, order not found.'));
+    }
 } else if (isset($_GET['orderId'])) {
     $result = RestClient::call('GET', ORDER_API, array('id' => $_GET['orderId']));
     if ($result) {
