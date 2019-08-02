@@ -18,12 +18,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     switch ($_POST['action'] ?? '') {
         case 'login':
             $error = Session::login($_POST['email'] ?? '', $_POST['password'] ?? '');
-            ClientPage::redirect($error, ($_POST['forPurchase'] ?? '') == 'true' ? 'shoppingCart' : '');
+            ClientPage::redirect($error, ($_POST['forPurchase'] ?? '') == 'true' ? 'shoppingCart' : null);
             break;
 
         case 'signup':
             $error = Session::signup($_POST['name'] ?? '', $_POST['email'] ?? '', $_POST['password1'] ?? '', $_POST['password2'] ?? '');
-            ClientPage::redirect($error, ($_POST['forPurchase'] ?? '') == 'true' ? 'shoppingCart' : '');
+            ClientPage::redirect($error, ($_POST['forPurchase'] ?? '') == 'true' ? 'shoppingCart' : null);
             break;
 
         case 'updateProfile':
@@ -67,65 +67,102 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if (empty(ClientPage::$errors)) {
-        ClientPage::$errors[] = 'Sorry, something goes wrong.';
+        ClientPage::$errors[] = 'Oops, something goes wrong.';
     }
+    ClientPage::showErrors();
+    exit;
 }
 
-ClientPage::header();
-ClientPage::navigator();
-if (!empty(ClientPage::$errors)) {
-    ClientPage::showErrors();
-} else if (isset($_GET['page']) && $_GET['page'] == 'login') {
-    ClientPage::userLogin(isset($_GET['forPurchase']) && $_GET['forPurchase'] == 'true');
-} else if (isset($_GET['page']) && $_GET['page'] == 'signup') {
-    ClientPage::userSignup(isset($_GET['forPurchase']) && $_GET['forPurchase'] == 'true');
-} else if (isset($_GET['page']) && $_GET['page'] == 'profile') {
-    $result = RestClient::call('GET', USER_API, array('id' => Session::$userId));
-    if ($result) {
-        $user = User::deserialize($result);
-        Session::setUser($user->getId(), $user->getName());
-        ClientPage::userProfile($user);
-    } else {
-        ClientPage::showErrors('Sorry, user not found.');
-    }
-} else if (isset($_GET['page']) && $_GET['page'] == 'shoppingCart') {
-    $ids = array_map(function($tuple) { return $tuple->productId; }, ShoppingCart::$shoppingCart);
-    if (!empty($ids)) {
-        $result = RestClient::call('GET', PRODUCT_API, array('ids' => $ids));
-        $products = array_map('Product::deserialize', $result);
-    } else {
-        $products = array();
-    }
-    ClientPage::shoppingCart(ShoppingCart::getShoppingCart($products));
-} else if (isset($_GET['page']) && $_GET['page'] == 'orderList') {
-    $result = RestClient::call('GET', ORDER_API, array('userId' => Session::$userId));
-    if ($result) {
-        $orders = array_map('OrderHead::deserialize', $result);
-        ClientPage::orderList($orders);
-    } else {
-        ClientPage::showErrors('Sorry, order not found.');
-    }
-} else if (isset($_GET['orderId'])) {
-    $result = RestClient::call('GET', ORDER_API, array('id' => $_GET['orderId']));
-    if ($result) {
-        $order = OrderHead::deserialize($result);
-        ClientPage::orderDetail($order);
-    } else {
-        ClientPage::showErrors('Sorry, order not found.');
-    }
-} else if (isset($_GET['productId'])) {
-    $result = RestClient::call('GET', PRODUCT_API, array('id' => $_GET['productId']));
-    if ($result) {
-        $product = Product::deserialize($result);
-        ClientPage::productDetail($product);
-    } else {
-        ClientPage::showErrors('Sorry, product not found.');
+if (isset($_GET['page'])) {
+    switch ($_GET['page']) {
+        case 'login':
+            ClientPage::userLogin(($_GET['forPurchase'] ?? '') == 'true');
+            break;
+
+        case 'signup':
+            ClientPage::userSignup(($_GET['forPurchase'] ?? '') == 'true');
+            break;
+
+        case 'profile':
+            if (is_null(Session::$userId)) {
+                ClientPage::showErrors('Oops, you are not logged in');
+                break;
+            }
+            $result = RestClient::call('GET', USER_API, array('id' => Session::$userId));
+            if ($result) {
+                $user = User::deserialize($result);
+                Session::setUser($user->getId(), $user->getName());
+                ClientPage::userProfile($user);
+            } else {
+                ClientPage::showErrors('Sorry, user not found.');
+            }
+            break;
+
+        case 'shoppingCart':
+            $ids = array_map(function($tuple) { return $tuple->productId; }, ShoppingCart::$shoppingCart);
+            if (!empty($ids)) {
+                $result = RestClient::call('GET', PRODUCT_API, array('ids' => $ids));
+                $products = array_map('Product::deserialize', $result);
+            } else {
+                $products = array();
+            }
+            ClientPage::shoppingCart(ShoppingCart::getShoppingCart($products));
+            break;
+
+        case 'orderList':
+            if (is_null(Session::$userId)) {
+                ClientPage::showErrors('Oops, you are not logged in');
+                break;
+            }
+            $result = RestClient::call('GET', ORDER_API, array('userId' => Session::$userId));
+            if ($result) {
+                $orders = array_map('OrderHead::deserialize', $result);
+                ClientPage::orderList($orders);
+            } else {
+                ClientPage::showErrors('Sorry, failed to get order list.');
+            }
+            break;
+
+        default:
+            ClientPage::showErrors('Oops, something goes wrong.');
+            break;
     }
 } else {
-    $result = RestClient::call('GET', PRODUCT_API);
-    $products = array_map('Product::deserialize', $result);
-    ClientPage::productList($products);
+    switch (true) {
+        case isset($_GET['orderId']):
+            if (is_null(Session::$userId)) {
+                ClientPage::showErrors('Oops, you are not logged in');
+                break;
+            }
+            $result = RestClient::call('GET', ORDER_API, array('id' => $_GET['orderId']));
+            if ($result) {
+                $order = OrderHead::deserialize($result);
+                ClientPage::orderDetail($order);
+            } else {
+                ClientPage::showErrors('Sorry, order not found.');
+            }
+            break;
+
+        case isset($_GET['productId']):
+            $result = RestClient::call('GET', PRODUCT_API, array('id' => $_GET['productId']));
+            if ($result) {
+                $product = Product::deserialize($result);
+                ClientPage::productDetail($product);
+            } else {
+                ClientPage::showErrors('Sorry, product not found.');
+            }
+            break;
+
+        default:
+            $result = RestClient::call('GET', PRODUCT_API);
+            if ($result) {
+                $products = array_map('Product::deserialize', $result);
+                ClientPage::productList($products);
+            } else {
+                ClientPage::showErrors('Sorry, failed to get product list.');
+            }
+            break;
+    }
 }
-ClientPage::footer();
 
 ?>
