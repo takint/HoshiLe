@@ -61,6 +61,27 @@ class ShoppingCart {
         self::updateShoppingCart();
     }
 
+    public static function purchase() /* : int or string */ {
+        if (is_null(Session::$userId)) {
+            return 'Oops, you are not logged in';
+        }
+        if (empty(self::$shoppingCart)) {
+            return 'Oops, your shopping cart is empty.';
+        }
+
+        $params = array(
+            'userId' => Session::$userId,
+            'details' => self::$shoppingCart
+        );
+        $result = RestClient::call('POST', ORDER_API, $params);
+        if (is_int($result)) {
+            self::clearShoppingCart();
+            return $result;
+        } else {
+            return 'Sorry, failed to purchase.';
+        }
+    }
+
     public static function clearShoppingCart() {
         self::$shoppingCart = array();
         self::updateShoppingCart();
