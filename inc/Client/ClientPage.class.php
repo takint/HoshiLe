@@ -6,10 +6,7 @@ class ClientPage {
 
     public static $errors = array();
 
-    public static function header(string $extra = null) {
-        if (!is_null($extra)) {
-            self::$title .= ' - ' . $extra;
-        }
+    public static function header(string $page = null) {
         include 'view/head.view.php';
     }
 
@@ -19,6 +16,13 @@ class ClientPage {
 
     public static function footer() {
         include 'view/footer.view.php';
+    }
+
+    public static function about() {
+        self::header('About');
+        self::navigator();
+        include 'view/about.view.php';
+        self::footer();
     }
 
     public static function userLogin(bool $forPurchase) {

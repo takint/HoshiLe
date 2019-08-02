@@ -12,7 +12,7 @@
     <div class="collapse navbar-collapse" id="navbar-content">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a class="nav-link" href="#about">About</a>
+          <a class="nav-link" href="<?php echo $_SERVER['PHP_SELF']; ?>?page=about">About</a>
         </li>
       </ul>
       <ul class="navbar-nav">
