@@ -63,13 +63,10 @@
           <?php } else { ?>
             <input type="hidden" name="action" value="purchase">
           <?php } ?>
-          <button class="btn btn-lg btn-primary w-25" type="submit" <?php if (empty($shoppingCart)) echo 'disabled' ?>>
+          <button class="btn btn-lg btn-primary w-25" type="submit" <?php if (!is_null(Session::$userId) && empty($shoppingCart)) echo 'disabled'; ?>>
             <?php echo is_null(Session::$userId) ? 'Please Log in' : 'Purchase'; ?>
           </button>
         </form>
-      </div>
-      <div class="text-center mt-2">
-        <a class="btn btn-link" href="<?php echo $_SERVER['PHP_SELF']; ?>">Continue Shopping</a>
       </div>
     </div>
   </div>

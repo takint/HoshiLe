@@ -10,7 +10,7 @@ class ClientPage {
         include 'view/head.view.php';
     }
 
-    public static function navigator() {
+    public static function navigator(string $page = null) {
         include 'view/nav.view.php';
     }
 
@@ -20,21 +20,21 @@ class ClientPage {
 
     public static function about() {
         self::header('About');
-        self::navigator();
+        self::navigator('about');
         include 'view/about.view.php';
         self::footer();
     }
 
     public static function userLogin(bool $forPurchase) {
         self::header('Login');
-        self::navigator();
+        self::navigator('login');
         include 'view/userLogin.view.php';
         self::footer();
     }
 
     public static function userSignup(bool $forPurchase) {
         self::header('Signup');
-        self::navigator();
+        self::navigator('signup');
         include 'view/userSignup.view.php';
         self::footer();
     }
@@ -48,7 +48,7 @@ class ClientPage {
 
     public static function productList(array $products) {
         self::header();
-        self::navigator();
+        self::navigator('home');
         include 'view/productList.view.php';
         self::footer();
     }
