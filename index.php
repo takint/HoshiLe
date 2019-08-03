@@ -75,6 +75,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 if (isset($_GET['page'])) {
     switch ($_GET['page']) {
+        case 'about':
+            ClientPage::about();
+            break;
+
         case 'login':
             ClientPage::userLogin(($_GET['forPurchase'] ?? '') == 'true');
             break;

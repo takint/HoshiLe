@@ -42,9 +42,6 @@
           </tr>
         </tfoot>
       </table>
-      <div class="text-center mt-2">
-        <a class="btn btn-link" href="<?php echo $_SERVER['PHP_SELF']; ?>">Continue Shopping</a>
-      </div>
     </div>
   </div>
 </main>
