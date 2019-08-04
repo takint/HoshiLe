@@ -49,6 +49,15 @@ class AdminPage {
         <p><strong>Page not found</strong></p>
     <?php }
 
+    public static function redirectToPage(string $url=""){ ?>
+        <!doctype html>
+        <html lang="en">
+            <head>
+                <meta http-equiv='refresh' content="0;URL='<?=$_SERVER['CONTEXT_PREFIX'].$url?>'">
+            </head>
+        </html>
+    <?php }
+
     public static function redirectToList($controllerName){ ?>
         <!doctype html>
         <html lang="en">

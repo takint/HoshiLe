@@ -3,7 +3,10 @@
   <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
   <ul class="navbar-nav px-3">
     <li class="nav-item text-nowrap">
-      <a class="nav-link" href="#">Sign out</a>
+      <form method="post" action="<?php echo $_SERVER['CONTEXT_PREFIX']; ?>/index.php">
+        <input type="hidden" name="action" value="logout">
+        <button class="btn btn-link nav-link" type="submit">Log out</button>
+      </form>
     </li>
   </ul>
 </nav>
