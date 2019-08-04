@@ -4,6 +4,7 @@ class Session {
 
     public static $userId = null;
     public static $userName = null;
+    public static $isAdmin = false;
 
     public static function initialize() {
         session_start();
@@ -11,15 +12,18 @@ class Session {
         if (!empty($_SESSION['user'])) {
             self::$userId = $_SESSION['user']['id'];
             self::$userName = $_SESSION['user']['name'];
+            self::$isAdmin = $_SESSION['user']['admin'];
         }
     }
 
-    public static function setUser(int $id, string $name) {
+    public static function setUser(int $id, string $name, bool $admin = false) {
         self::$userId = $id;
         self::$userName = $name;
+        self::$isAdmin = $admin;
         $_SESSION['user'] = array(
             'id' => self::$userId,
-            'name' => self::$userName
+            'name' => self::$userName,
+            'admin' => self::$isAdmin
         );
     }
 
@@ -35,7 +39,7 @@ class Session {
         $result = RestClient::call('GET', USER_API, $params);
         if ($result) {
             $user = User::deserialize($result);
-            self::setUser($user->getId(), $user->getName());
+            self::setUser($user->getId(), $user->getName(), $user->getIsAdmin());
             ShoppingCart::mergeShoppingCart(json_decode($user->getShoppingCart()));
             return null;
         } else {
@@ -115,6 +119,7 @@ class Session {
     public static function logout() {
         self::$userId = null;
         self::$userName = null;
+        self::$isAdmin = false;
         unset($_SESSION['user']);
 
         ShoppingCart::clearShoppingCart();
