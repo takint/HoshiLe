@@ -44,6 +44,10 @@ class AdminPage {
         include_once('views/order-details.view.php');
     }
 
+    public static function dashboardPage($lstOrers, $lstProducts, $lstUsers){
+        include_once('views/dashboard.view.php');
+    }
+
     public static function pageNotFound(){ ?>
         <h1>404</h1>
         <p><strong>Page not found</strong></p>
