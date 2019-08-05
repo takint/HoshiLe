@@ -44,7 +44,7 @@ class AdminPage {
         include_once('views/order-details.view.php');
     }
 
-    public static function dashboardPage($lstOrers, $lstProducts, $lstUsers){
+    public static function dashboardPage($lstOrders, $lstProducts, $lstUsers){
         include_once('views/dashboard.view.php');
     }
 
