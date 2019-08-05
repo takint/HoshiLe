@@ -9,7 +9,7 @@ class OrderController {
             case "view": 
                 $jorder = RestClient::call("GET", ORDER_API, array("id" => $data));
                 $order = OrderHead::deserialize($jorder);
-                AdminPage::orderDetails($prod, "view");
+                AdminPage::orderDetails($order, "view");
             break;
             case "add":
                 $no = new OrderHead();

@@ -2,8 +2,7 @@
     <h1 class="h2">Orders</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
         <div class="btn-group mr-2">
-            <a href="?controller=order&action=add" class="btn btn-sm btn-success">Add new</a>
-            <a href="?controller=order&action=import" class="btn btn-sm btn-info">Import</a>
+            <a href="?controller=order&action=export" class="btn btn-sm btn-info">Export</a>
         </div>
     </div>
 </div>
@@ -33,15 +32,12 @@
                     <td><?= $order->getTotalItems()?></td>
                     <td><?= "$".$totalBill?></td>
                     <td>
-                        <a href="?controller=order&action=edit&id=<?= $order->getId()?>" class="btn btn-sm btn-primary">Edit</a>
+                        <a href="?controller=order&action=edit&id=<?= $order->getId()?>" class="btn btn-sm btn-primary">View</a>
                     </td>
                 </tr>
         <?php } ?>
         <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>Total revenue</td>
+            <td colspan="4">Total revenue</td>
             <td colspan="2">
                 <?= "$".$totalRev?>
             </td>
