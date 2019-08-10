@@ -11,6 +11,15 @@ ProductDAO::initialize();
 
 //Pull the request data
 $requestData = json_decode(file_get_contents('php://input'));
+if (is_null($requestData) && $_SERVER['REQUEST_METHOD'] == 'GET') {
+    $requestData = new stdClass();
+    if (isset($_GET['id'])) {
+        $requestData->id = $_GET['id'];
+    }
+    if (isset($_GET['ids'])) {
+        $requestData->ids = array_map('intval', explode(',', $_GET['ids']));
+    }
+}
 
 //Do something based on the request
 switch ($_SERVER['REQUEST_METHOD']) {
@@ -21,6 +30,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
             $product = ProductDAO::getProduct($requestData->id);
             $stdProduct = is_null($product) ? null : $product->serialize();
 
+            header('Access-Control-Allow-Origin: *');
             header('Content-Type: application/json');
             echo json_encode($stdProduct);
         } else {
@@ -34,6 +44,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 $stdProducts[] = $product->serialize();
             }
 
+            header('Access-Control-Allow-Origin: *');
             header('Content-Type: application/json');
             echo json_encode($stdProducts);
         }
@@ -43,6 +54,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
             $np = Product::deserialize($requestData);
             $result = ProductDAO::createProduct($np);
 
+            header('Access-Control-Allow-Origin: *');
             header('Content-Type: application/json');
             echo json_encode($result);
         }
@@ -52,6 +64,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
             $np = Product::deserialize($requestData);
             $result = ProductDAO::updateProduct($np);
 
+            header('Access-Control-Allow-Origin: *');
             header('Content-Type: application/json');
             echo json_encode($result);
         }
@@ -60,9 +73,16 @@ switch ($_SERVER['REQUEST_METHOD']) {
         if (isset($requestData->id)) {
             $result = ProductDAO::deleteProduct($requestData->id);
 
+            header('Access-Control-Allow-Origin: *');
             header('Content-Type: application/json');
             echo json_encode($result);
         }
+    break;
+    case 'OPTION':
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+        header('Access-Control-Allow-Headers: Content-Type');
+        header('Access-Control-Max-Age: 86400');
     break;
     default:
         echo json_encode(array('message' => 'Você fala HTTP?'));
