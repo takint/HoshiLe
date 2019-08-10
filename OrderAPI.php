@@ -20,6 +20,15 @@ UserDAO::initialize();
 
 //Pull the request data
 $requestData = json_decode(file_get_contents('php://input'));
+if (is_null($requestData) && $_SERVER['REQUEST_METHOD'] == 'GET') {
+    $requestData = new stdClass();
+    if (isset($_GET['id'])) {
+        $requestData->id = $_GET['id'];
+    }
+    if (isset($_GET['userId'])) {
+        $requestData->userId = $_GET['userId'];
+    }
+}
 
 //Do something based on the request
 switch ($_SERVER['REQUEST_METHOD']) {
@@ -35,6 +44,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 $stdOrder = null;
             }
 
+            header('Access-Control-Allow-Origin: *');
             header('Content-Type: application/json');
             echo json_encode($stdOrder);
         } else {
@@ -49,6 +59,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 $stdOrders[] = $order->serialize();
             }
 
+            header('Access-Control-Allow-Origin: *');
             header('Content-Type: application/json');
             echo json_encode($stdOrders);
         }
@@ -67,9 +78,17 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 OrderDetailDAO::createOrderDetail($orderDetail);
             }
 
+            header('Access-Control-Allow-Origin: *');
             header('Content-Type: application/json');
             echo json_encode($orderId);
         }
+        break;
+
+    case 'OPTION':
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+        header('Access-Control-Allow-Headers: Content-Type');
+        header('Access-Control-Max-Age: 86400');
         break;
 
     default:

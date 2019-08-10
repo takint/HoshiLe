@@ -11,6 +11,18 @@ UserDAO::initialize();
 
 //Pull the request data
 $requestData = json_decode(file_get_contents('php://input'));
+if (is_null($requestData) && $_SERVER['REQUEST_METHOD'] == 'GET') {
+    $requestData = new stdClass();
+    if (isset($_GET['id'])) {
+        $requestData->id = $_GET['id'];
+    }
+    if (isset($_GET['email'])) {
+        $requestData->email = $_GET['email'];
+    }
+    if (isset($_GET['password'])) {
+        $requestData->password = $_GET['password'];
+    }
+}
 
 //Do something based on the request
 switch ($_SERVER['REQUEST_METHOD']) {
@@ -32,11 +44,13 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 $stdCustomers[] = $cust->serialize();
             }
 
+            header('Access-Control-Allow-Origin: *');
             header('Content-Type: application/json');
             echo json_encode($stdCustomers);
             break;
         }
 
+        header('Access-Control-Allow-Origin: *');
         header('Content-Type: application/json');
         echo json_encode(is_null($user) ? null : $user->serialize());
         break;
@@ -50,6 +64,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
         } catch (PDOException $ex) {
             $result = null;
         }
+        header('Access-Control-Allow-Origin: *');
         header('Content-Type: application/json');
         echo json_encode($result);
         break;
@@ -86,8 +101,16 @@ switch ($_SERVER['REQUEST_METHOD']) {
         } else {
             $result = false;
         }
+        header('Access-Control-Allow-Origin: *');
         header('Content-Type: application/json');
         echo json_encode($result);
+        break;
+
+    case 'OPTION':
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+        header('Access-Control-Allow-Headers: Content-Type');
+        header('Access-Control-Max-Age: 86400');
         break;
 
     default:
