@@ -78,7 +78,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
             echo json_encode($result);
         }
     break;
-    case 'OPTION':
+    case 'OPTIONS':
         header('Access-Control-Allow-Origin: *');
         header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
         header('Access-Control-Allow-Headers: Content-Type');
